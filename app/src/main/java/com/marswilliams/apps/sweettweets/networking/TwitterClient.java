@@ -1,4 +1,4 @@
-package com.marswilliams.apps.sweettweets;
+package com.marswilliams.apps.sweettweets.networking;
 
 import android.content.Context;
 

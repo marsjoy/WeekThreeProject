@@ -1,10 +1,11 @@
-package com.marswilliams.apps.sweettweets;
+package com.marswilliams.apps.sweettweets.activities;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
 import com.codepath.oauth.OAuthLoginActionBarActivity;
+import com.marswilliams.apps.sweettweets.networking.TwitterClient;
 
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 

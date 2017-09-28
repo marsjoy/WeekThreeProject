@@ -1,6 +1,6 @@
 package com.marswilliams.apps.sweettweets.models;
 
-import com.marswilliams.apps.sweettweets.MyDatabase;
+import com.marswilliams.apps.sweettweets.databases.SweetTweetsDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -20,8 +20,8 @@ import java.util.List;
  * Note: All models **must extend from** `BaseModel` as shown below.
  * 
  */
-@Table(database = MyDatabase.class)
-public class SampleModel extends BaseModel {
+@Table(database = SweetTweetsDatabase.class)
+public class TimelineModel extends BaseModel {
 
 	@PrimaryKey
 	@Column
@@ -31,12 +31,12 @@ public class SampleModel extends BaseModel {
 	@Column
 	private String name;
 
-	public SampleModel() {
+	public TimelineModel() {
 		super();
 	}
 
 	// Parse model from JSON
-	public SampleModel(JSONObject object){
+	public TimelineModel(JSONObject object){
 		super();
 
 		try {
@@ -61,11 +61,11 @@ public class SampleModel extends BaseModel {
 	 */
 	
 	// Record Finders
-	public static SampleModel byId(long id) {
-		return new Select().from(SampleModel.class).where(SampleModel_Table.id.eq(id)).querySingle();
+	public static TimelineModel byId(long id) {
+		return new Select().from(TimelineModel.class).where(SampleModel_Table.id.eq(id)).querySingle();
 	}
 
-	public static List<SampleModel> recentItems() {
-		return new Select().from(SampleModel.class).orderBy(SampleModel_Table.id, false).limit(300).queryList();
+	public static List<TimelineModel> recentItems() {
+		return new Select().from(TimelineModel.class).orderBy(SampleModel_Table.id, false).limit(300).queryList();
 	}
 }
