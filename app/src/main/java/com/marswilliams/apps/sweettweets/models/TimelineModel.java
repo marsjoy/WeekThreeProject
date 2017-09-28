@@ -62,10 +62,10 @@ public class TimelineModel extends BaseModel {
 	
 	// Record Finders
 	public static TimelineModel byId(long id) {
-		return new Select().from(TimelineModel.class).where(SampleModel_Table.id.eq(id)).querySingle();
+		return new Select().from(TimelineModel.class).where(TimelineModel_Table.id.eq(id)).querySingle();
 	}
 
 	public static List<TimelineModel> recentItems() {
-		return new Select().from(TimelineModel.class).orderBy(SampleModel_Table.id, false).limit(300).queryList();
+		return new Select().from(TimelineModel.class).orderBy(TimelineModel_Table.id, false).limit(300).queryList();
 	}
 }
