@@ -1,4 +1,4 @@
-package com.marswilliams.apps.twitterclient;
+package com.marswilliams.apps.sweettweets;
 
 import android.app.Application;
 import android.content.Context;

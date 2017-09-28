@@ -1,6 +1,6 @@
-# Project 3 - *Sweet Tweet*
+# Project 3 - *Sweet Tweets*
 
-**Sweet Tweet** is an android app that allows a user to view his Twitter timeline and post a new tweet. The app utilizes [Twitter REST API](https://developer.twitter.com/en/docs/api-reference-index).
+**Sweet Tweets** is an android app that allows a user to view his Twitter timeline and post a new tweet. The app utilizes [Twitter REST API](https://developer.twitter.com/en/docs/api-reference-index).
 
 Time spent: **infinity** hours spent in total
 

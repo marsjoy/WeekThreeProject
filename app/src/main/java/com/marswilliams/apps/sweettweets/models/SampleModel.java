@@ -1,6 +1,6 @@
-package com.marswilliams.apps.twitterclient.models;
+package com.marswilliams.apps.sweettweets.models;
 
-import com.marswilliams.apps.twitterclient.MyDatabase;
+import com.marswilliams.apps.sweettweets.MyDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;

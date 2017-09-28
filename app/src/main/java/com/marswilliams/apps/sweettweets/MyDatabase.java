@@ -1,4 +1,4 @@
-package com.marswilliams.apps.twitterclient;
+package com.marswilliams.apps.sweettweets;
 
 import com.raizlabs.android.dbflow.annotation.Database;
 

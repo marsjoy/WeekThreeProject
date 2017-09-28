@@ -1,4 +1,4 @@
-package com.marswilliams.apps.twitterclient;
+package com.marswilliams.apps.sweettweets;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,14 +11,14 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(com.marswilliams.apps.twitterclient.R.layout.activity_login);
+		setContentView(com.marswilliams.apps.sweettweets.R.layout.activity_login);
 	}
 
 
 	// Inflate the menu; this adds items to the action bar if it is present.
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(com.marswilliams.apps.twitterclient.R.menu.login, menu);
+		getMenuInflater().inflate(com.marswilliams.apps.sweettweets.R.menu.login, menu);
 		return true;
 	}
 

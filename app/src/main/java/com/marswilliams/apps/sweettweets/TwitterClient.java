@@ -1,4 +1,4 @@
-package com.marswilliams.apps.twitterclient;
+package com.marswilliams.apps.sweettweets;
 
 import android.content.Context;
 
@@ -37,25 +37,30 @@ public class TwitterClient extends OAuthBaseClient {
 				REST_URL,
 				REST_CONSUMER_KEY,
 				REST_CONSUMER_SECRET,
-				String.format(REST_CALLBACK_URL_TEMPLATE, context.getString(com.marswilliams.apps.twitterclient.R.string.intent_host),
-						context.getString(com.marswilliams.apps.twitterclient.R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
+				String.format(REST_CALLBACK_URL_TEMPLATE, context.getString(com.marswilliams.apps.sweettweets.R.string.intent_host),
+						context.getString(com.marswilliams.apps.sweettweets.R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
 	}
-	// CHANGE THIS
-	// DEFINE METHODS for different API endpoints here
+
+	//	User can view the tweets from their home timeline (4 points)
+	//	User should be displayed the username, name, and body for each tweet
+	//	User should be displayed the relative timestamp for each tweet "8m", "7h"
+	//	User can view more tweets as they scroll with infinite pagination
 	public void getHomeTimeline(AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("?nojsoncallback=1&method=flickr.interestingness.getList");
-		// Can specify query string params directly or through RequestParams.
+		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		RequestParams params = new RequestParams();
 		params.put("format", "json");
 		client.get(apiUrl, params, handler);
 	}
 
-	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
-	 * 	  i.e getApiUrl("statuses/home_timeline.json");
-	 * 2. Define the parameters to pass to the request (query or body)
-	 *    i.e RequestParams params = new RequestParams("foo", "bar");
-	 * 3. Define the request method and make a call to the client
-	 *    i.e client.get(apiUrl, params, handler);
-	 *    i.e client.post(apiUrl, params, handler);
-	 */
+	//	User can compose a new tweet (4 points)
+	//	User can click a "Compose" icon in the AppBar on the top right
+	//	User can then enter a new tweet and post this to twitter
+	//	User is taken back to home timeline with new tweet visible in timeline
+	//	Newly created tweet should be manually inserted into the timeline and not rely on a full refresh
+	public void composeTweet(AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("/statuses/update.json");
+		RequestParams params = new RequestParams();
+		params.put("status", "json");
+		client.post(apiUrl, params, handler);
+	}
 }
