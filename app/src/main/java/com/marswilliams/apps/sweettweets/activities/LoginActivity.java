@@ -9,16 +9,12 @@ import com.codepath.oauth.OAuthLoginActionBarActivity;
 import com.marswilliams.apps.sweettweets.R;
 import com.marswilliams.apps.sweettweets.networking.TwitterClient;
 
-import java.io.IOException;
-
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-
-		isOnline();
 	}
 
 
@@ -27,17 +23,6 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(com.marswilliams.apps.sweettweets.R.menu.login, menu);
 		return true;
-	}
-
-	public boolean isOnline() {
-		Runtime runtime = Runtime.getRuntime();
-		try {
-			Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
-			int     exitValue = ipProcess.waitFor();
-			return (exitValue == 0);
-		} catch (IOException e)          { e.printStackTrace(); }
-		catch (InterruptedException e) { e.printStackTrace(); }
-		return false;
 	}
 
 	// OAuth authenticated successfully, launch primary authenticated activity
