@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.marswilliams.apps.sweettweets.R;
 import com.marswilliams.apps.sweettweets.models.Tweet;
 
@@ -42,23 +43,33 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         // get the data according to the position
         Tweet tweet = mTweets.get(position);
+        Glide.with(holder.ivProfileImage.getContext())
+                .load(tweet.user.profileImageUrl)
+                .placeholder(R.drawable.ic_profile_image_placeholder)
+                .into(holder.ivProfileImage);
 
         // populate the views according to this data
         holder.tvUserName.setText(tweet.user.name);
+        holder.tvUserScreenName.setText(tweet.user.screenName);
         holder.tvBody.setText(tweet.body);
+        holder.tvCreatedAt.setText(tweet.getRelativeCreatedAt());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivProfileImage;
         public TextView tvUserName;
+        public TextView tvUserScreenName;
         public TextView tvBody;
+        public TextView tvCreatedAt;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
+            tvUserScreenName = (TextView) itemView.findViewById(R.id.tvUserScreenName) ;
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
+            tvCreatedAt = (TextView) itemView.findViewById(R.id.tvCreatedAt);
         }
     }
 

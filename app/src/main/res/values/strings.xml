@@ -3,7 +3,7 @@
 
     <string name="app_name">Sweet Tweets</string>
     <string name="login_label">Log in</string>
-    <string name="intent_scheme">oauth</string>
-    <string name="intent_host">cprest</string>
+    <string name="intent_scheme">Sweet Tweets Oauth</string>
+    <string name="intent_host">Sweet Tweets Rest</string>
 
 </resources>
