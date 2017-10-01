@@ -5,5 +5,5 @@
     <string name="login_label">Log in</string>
     <string name="intent_scheme">Sweet Tweets Oauth</string>
     <string name="intent_host">Sweet Tweets Rest</string>
-
+    <string name="formatted_user_screen_name">\@%s</string>
 </resources>
