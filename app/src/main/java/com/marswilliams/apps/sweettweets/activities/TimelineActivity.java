@@ -119,8 +119,8 @@ public class TimelineActivity extends AppCompatActivity {
         // Configure the refreshing colors
         swipeRefreshLayout.setColorSchemeResources(
                 R.color.twitter_blue,
-                R.color.twitter_gray,
-                R.color.twitter_lightgray,
+                R.color.twitter_dark_gray,
+                R.color.twitter_light_gray,
                 R.color.twitter_red);
 
         initialPopulateTimeline();
