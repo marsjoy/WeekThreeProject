@@ -20,13 +20,40 @@ public class Tweet {
     public long uid; // Database ID for the tweet
     public User user;
     public String createdAt;
+    public int favoriteCount;
+    public boolean favorited;
+    int retweetCount;
+    boolean retweeted;
 
-    public Tweet() {}
+    public Tweet() {
+
+    }
+
     public Tweet(JSONObject jsonObject) throws JSONException {
         this.body = jsonObject.getString("text");
         this.uid = jsonObject.getLong("id");
         this.createdAt = jsonObject.getString("created_at");
         this.user = User.fromJSON(jsonObject.getJSONObject("user"));
+        try {
+            this.favorited = jsonObject.getBoolean("favorited");
+        } catch(JSONException e) {
+            this.favorited = false;
+        }
+        try {
+            this.favoriteCount = jsonObject.getInt("favorite_count");
+        } catch (JSONException e) {
+            this.favoriteCount = 0;
+        }
+        try {
+            this.retweeted = jsonObject.getBoolean("retweeted");
+        } catch(JSONException e) {
+            this.retweeted = false;
+        }
+        try {
+            this.retweetCount = jsonObject.getInt("retweet_count");
+        } catch (JSONException e) {
+            this.retweetCount = 0;
+        }
     }
 
     // Deserialize the JSON; the exceptions will be thrown back up to the caller
@@ -38,6 +65,26 @@ public class Tweet {
         tweet.uid = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
+        try {
+            tweet.favorited = jsonObject.getBoolean("favorited");
+        } catch(JSONException e) {
+            tweet.favorited = false;
+        }
+        try {
+            tweet.favoriteCount = jsonObject.getInt("favorite_count");
+        } catch (JSONException e) {
+            tweet.favoriteCount = 0;
+        }
+        try {
+            tweet.retweeted = jsonObject.getBoolean("retweeted");
+        } catch(JSONException e) {
+            tweet.retweeted = false;
+        }
+        try {
+            tweet.retweetCount = jsonObject.getInt("retweet_count");
+        } catch (JSONException e) {
+            tweet.retweetCount = 0;
+        }
         return tweet;
     }
 
@@ -52,7 +99,6 @@ public class Tweet {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                continue;
             }
         }
 
@@ -103,5 +149,19 @@ public class Tweet {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isRetweeted() {
+        return retweeted;
+    }
+
+    public void setRetweeted(boolean retweeted) {
+        this.retweeted = retweeted;
+    }
+
+    public long getRetweetCount() { return retweetCount; }
+
+    public void setRetweetCount(int retweetCount) {
+        this.retweetCount = retweetCount;
     }
 }

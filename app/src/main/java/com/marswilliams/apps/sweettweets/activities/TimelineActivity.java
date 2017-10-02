@@ -88,7 +88,7 @@ public class TimelineActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvTweets.getContext(),
                 new LinearLayoutManager(this).getOrientation());
         rvTweets.addItemDecoration(dividerItemDecoration);
-        
+
         rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) rvTweets.getLayoutManager()) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {

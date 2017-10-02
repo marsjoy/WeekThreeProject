@@ -1,8 +1,15 @@
 package com.marswilliams.apps.sweettweets.models;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.marswilliams.apps.sweettweets.TwitterApplication;
+import com.marswilliams.apps.sweettweets.networking.TwitterClient;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
+
+import cz.msebera.android.httpclient.Header;
 
 @Parcel
 public class User {
@@ -64,6 +71,40 @@ public class User {
 
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public interface UserCallbackInterface {
+        void onUserAvailable(User currentUser);
+    }
+
+    public static void getCurrentUser(final UserCallbackInterface handler) {
+        TwitterClient client = TwitterApplication.getRestClient();
+        client.verifyCredentials(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    handler.onUserAvailable(User.fromJSON(response));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
     }
 }
 

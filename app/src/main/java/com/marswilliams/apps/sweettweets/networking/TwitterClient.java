@@ -23,8 +23,6 @@ import com.loopj.android.http.RequestParams;
 public class TwitterClient extends OAuthBaseClient {
 	public static final BaseApi REST_API_INSTANCE = TwitterApi.instance(); // Changed
 	public static final String REST_URL = "https://api.twitter.com/1.1"; // Changed
-//	public static final String REST_CONSUMER_KEY = "XaCRIfdZgPelA1HeQOSy7m66X";       // Changed
-//	public static final String REST_CONSUMER_SECRET = "4Q3s2FrYRJKj03VgnQXqPHxY2kM59dolygLmjXqfhxucT1UOvU"; // Changed; todo obscure
 	public static final String REST_CONSUMER_KEY = "eb8XyF71pTjpJjAK1j37OTEd3";       // Change this
 	public static final String REST_CONSUMER_SECRET = "HbgDnxhHuTXYKp4AKqD01tHbKV0iZ5s0bfSnEB13z37VQ8mP3S"; // Change this
 
@@ -61,11 +59,9 @@ public class TwitterClient extends OAuthBaseClient {
 		getClient().get(apiUrl, handler);
 	}
 
-	public void getUserShow(String screenName, AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("users/show.json");
-		RequestParams params = new RequestParams();
-		params.put("screen_name", screenName);
-		getClient().get(apiUrl, params, handler);
+	public void verifyCredentials(AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("account/verify_credentials.json");
+		client.get(apiUrl, null, handler);
 	}
 
 	public void postTweet(String status, AsyncHttpResponseHandler handler) {
@@ -73,5 +69,19 @@ public class TwitterClient extends OAuthBaseClient {
 		RequestParams params = new RequestParams();
 		params.put("status", status);
 		getClient().post(apiUrl, params, handler);
+	}
+
+	public void retweet(long id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/retweet.json");
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		client.post(apiUrl, params, handler);
+	}
+
+	public void unRetweet(long id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/unretweet.json");
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		client.post(apiUrl, params, handler);
 	}
 }

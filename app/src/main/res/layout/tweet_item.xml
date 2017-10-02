@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:orientation="horizontal" android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_marginBottom="@dimen/tweet_margin"
-android:layout_marginTop="@dimen/tweet_margin">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/tweet_margin"
+    android:layout_marginStart="@dimen/tweet_margin"
+    android:layout_marginEnd="@dimen/tweet_margin"
+    android:layout_marginTop="@dimen/tweet_margin">
 
 <ImageView
     android:id="@+id/ivProfileImage"
@@ -21,13 +24,14 @@ android:layout_marginTop="@dimen/tweet_margin">
 
 <TextView
     android:id="@+id/tvUserScreenName"
-    android:layout_alignParentTop="true"
+    android:layout_alignBottom="@+id/tvUserName"
     android:layout_toEndOf="@+id/tvUserName"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 
 <TextView
     android:id="@+id/tvCreatedAt"
+    android:layout_below="@+id/tvUserScreenName"
     android:layout_alignParentEnd="true"
     android:layout_alignParentTop="true"
     android:layout_width="wrap_content"
@@ -35,13 +39,74 @@ android:layout_marginTop="@dimen/tweet_margin">
 
 <TextView
     android:id="@+id/tvBody"
-    android:layout_below="@+id/tvUserName"
+    android:layout_below="@+id/tvCreatedAt"
     android:layout_alignStart="@+id/tvUserName"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:minLines="1"
-    android:maxLines="1"
+    android:minLines="@string/max_lines"
+    android:maxLines="@string/max_lines"
     android:ellipsize="end"
-    android:textAppearance="@android:style/TextAppearance.Medium"/>
+    android:textAppearance="@android:style/TextAppearance.Medium"
+    android:linksClickable="true"/>
+
+    <LinearLayout
+        android:id="@+id/llButtonRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvBody"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/ibMessage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/ic_comment"/>
+
+        <TextView
+            android:id="@+id/tvReplyCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/ibRetweet"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:backgroundTint="@android:color/transparent"
+            app:srcCompat="@drawable/ic_retweet"/>
+
+        <TextView
+            android:id="@+id/tvRetweetCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/ibFavorite"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/ic_favorite"/>
+
+        <TextView
+            android:id="@+id/tvFavoriteCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/ibDirectMessage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/ic_direct_message"/>
+    </LinearLayout>
 
 </RelativeLayout>

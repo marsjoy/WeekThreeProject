@@ -7,17 +7,9 @@
     <string name="formatted_user_screen_name">\@%s</string>
     <string name="snackbar_text_internet_lost">Disconnected from Internet</string>
     <string name="snackbar_text_internet_available">Connected to Internet</string>
-    <string name="cancel">Cancel</string>
     <string name="tweet">Tweet</string>
     <string name="compose_hint">Tweet something sweet</string>
-    <string name="number">%1$d</string>
-    <string name="media">Media</string>
-    <string name="gif">GIF</string>
-    <string name="location">Location</string>
-    <string name="character_count">140</string>
     <string name="compose_label">Compose</string>
-    <string name="tweet_action">Tweet</string>
-    <string name="_140">140</string>
-    <string name="separatorSymbol">•</string>
     <string name="close">X</string>
+    <string name="max_lines">1</string>
 </resources>
