@@ -4,4 +4,9 @@
     <attr name="primary">#9C27B0</attr>
     <attr name="primaryDark">#7B1FA2</attr>
     <attr name="primaryLight">#E1BEE7</attr>
+    <color name="twitter_blue">#1da1f2</color>
+    <color name="twitter_gray">#657786</color>
+    <color name="twitter_lightgray">#f5f8fa</color>
+    <color name="twitter_red">#e0245e</color>
+    <color name="white">#FFFFFF</color>
 </resources>

@@ -23,8 +23,10 @@ import com.loopj.android.http.RequestParams;
 public class TwitterClient extends OAuthBaseClient {
 	public static final BaseApi REST_API_INSTANCE = TwitterApi.instance(); // Changed
 	public static final String REST_URL = "https://api.twitter.com/1.1"; // Changed
-	public static final String REST_CONSUMER_KEY = "XaCRIfdZgPelA1HeQOSy7m66X";       // Changed
-	public static final String REST_CONSUMER_SECRET = "4Q3s2FrYRJKj03VgnQXqPHxY2kM59dolygLmjXqfhxucT1UOvU"; // Changed; todo obscure
+//	public static final String REST_CONSUMER_KEY = "XaCRIfdZgPelA1HeQOSy7m66X";       // Changed
+//	public static final String REST_CONSUMER_SECRET = "4Q3s2FrYRJKj03VgnQXqPHxY2kM59dolygLmjXqfhxucT1UOvU"; // Changed; todo obscure
+	public static final String REST_CONSUMER_KEY = "eb8XyF71pTjpJjAK1j37OTEd3";       // Change this
+	public static final String REST_CONSUMER_SECRET = "HbgDnxhHuTXYKp4AKqD01tHbKV0iZ5s0bfSnEB13z37VQ8mP3S"; // Change this
 
 	// Landing page to indicate the OAuth flow worked in case Chrome for Android 25+ blocks navigation back to the app.
 	public static final String FALLBACK_URL = "https://codepath.github.io/android-rest-client-template/success.html";
@@ -42,27 +44,34 @@ public class TwitterClient extends OAuthBaseClient {
 						context.getString(com.marswilliams.apps.sweettweets.R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
 	}
 
-	//	User can view the tweets from their home timeline (4 points)
-	//	User should be displayed the username, name, and body for each tweet
-	//	User should be displayed the relative timestamp for each tweet "8m", "7h"
-	//	User can view more tweets as they scroll with infinite pagination
-	public void getHomeTimeline(AsyncHttpResponseHandler handler) {
+	public void getHomeTimeline(long max_id, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
+		// specify params
 		RequestParams params = new RequestParams();
 		params.put("count", 25);
 		params.put("since_id", 1);
-		client.get(apiUrl, params, handler);
+		if (max_id > 1) { // for consecutive calls to this endpoint
+			params.put("max_id", max_id); // would we want this to update based on the last id we got?
+		}
+		getClient().get(apiUrl, params, handler);
 	}
 
-	//	User can compose a new tweet (4 points)
-	//	User can click a "Compose" icon in the AppBar on the top right
-	//	User can then enter a new tweet and post this to twitter
-	//	User is taken back to home timeline with new tweet visible in timeline
-	//	Newly created tweet should be manually inserted into the timeline and not rely on a full refresh
-	public void composeTweet(AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("/statuses/update.json");
+	public void getAccountSettings(AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("account/settings.json");
+		getClient().get(apiUrl, handler);
+	}
+
+	public void getUserShow(String screenName, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("users/show.json");
 		RequestParams params = new RequestParams();
-		params.put("status", "json");
-		client.post(apiUrl, params, handler);
+		params.put("screen_name", screenName);
+		getClient().get(apiUrl, params, handler);
+	}
+
+	public void postTweet(String status, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/update.json");
+		RequestParams params = new RequestParams();
+		params.put("status", status);
+		getClient().post(apiUrl, params, handler);
 	}
 }

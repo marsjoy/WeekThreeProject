@@ -14,6 +14,8 @@ import com.marswilliams.apps.sweettweets.models.Tweet;
 
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
 /**
  * Created by mars_williams on 9/29/17.
  */
@@ -21,7 +23,7 @@ import java.util.List;
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
     // pass in the tweets array to the constructor
 
-    private List<Tweet> mTweets;
+    private static List<Tweet> mTweets;
 
     public TweetAdapter(List<Tweet> tweets) {
         mTweets = tweets;
@@ -44,15 +46,16 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         // get the data according to the position
         Tweet tweet = mTweets.get(position);
         Glide.with(holder.ivProfileImage.getContext())
-                .load(tweet.user.profileImageUrl)
+                .load(tweet.getUser().getProfileImageUrl())
                 .placeholder(R.drawable.ic_profile_image_placeholder)
+                .bitmapTransform(new RoundedCornersTransformation(holder.ivProfileImage.getContext(), 25, 0))
                 .into(holder.ivProfileImage);
 
         // populate the views according to this data
-        holder.tvUserName.setText(tweet.user.name);
+        holder.tvUserName.setText(tweet.getUser().getName());
         holder.tvUserScreenName.setText(holder.tvUserScreenName.getContext()
-                .getString(R.string.formatted_user_screen_name, tweet.user.screenName));
-        holder.tvBody.setText(tweet.body);
+                .getString(R.string.formatted_user_screen_name, tweet.getUser().getScreenName()));
+        holder.tvBody.setText(tweet.getBody());
         holder.tvCreatedAt.setText(tweet.getRelativeCreatedAt());
     }
 
@@ -76,6 +79,25 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
+        return this.mTweets.size();
+    }
+
+    public static int getCount() {
         return mTweets.size();
+    }
+
+    public void clear(){
+        int size = this.mTweets.size();
+        this.mTweets.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+
+    public void addAll(List<Tweet> list) {
+        mTweets.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public static Tweet getAt(int position) {
+        return mTweets.get(position);
     }
 }

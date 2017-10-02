@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:orientation="horizontal" android:layout_width="match_parent"
 android:layout_height="wrap_content"
-android:layout_marginBottom="@dimen/tweet_margin">
+android:layout_marginBottom="@dimen/tweet_margin"
+android:layout_marginTop="@dimen/tweet_margin">
 
 <ImageView
     android:id="@+id/ivProfileImage"
@@ -37,6 +38,10 @@ android:layout_marginBottom="@dimen/tweet_margin">
     android:layout_below="@+id/tvUserName"
     android:layout_alignStart="@+id/tvUserName"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:minLines="1"
+    android:maxLines="1"
+    android:ellipsize="end"
+    android:textAppearance="@android:style/TextAppearance.Medium"/>
 
 </RelativeLayout>
