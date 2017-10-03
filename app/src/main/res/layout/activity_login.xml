@@ -42,29 +42,28 @@
         android:id="@+id/ibLogin"
         android:layout_width="match_parent"
         android:layout_height="@dimen/login_button_height"
-        android:layout_below="@+id/tvWelcomeDetail"
-        android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="74dp"
         android:background="@drawable/pill_filled"
         android:elevation="8dp"
+        android:layout_centerInParent="true"
         android:onClick="loginToRest"
         android:text="@string/login_label"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:layout_below="@+id/tvWelcomeDetail"
+        android:layout_centerHorizontal="true" />
 
     <ImageView
         android:id="@+id/ivLogo"
         android:layout_width="@dimen/twitter_logo_image_width"
-        android:layout_height="@dimen/twitter_logo_image_height"
+        android:layout_height="@dimen/twitter_logo_image_width"
         android:adjustViewBounds="false"
         android:baselineAlignBottom="true"
-        android:scaleType="centerCrop"
+        android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_twitter_logo_login"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/tvWelcomeDetail" />
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>
