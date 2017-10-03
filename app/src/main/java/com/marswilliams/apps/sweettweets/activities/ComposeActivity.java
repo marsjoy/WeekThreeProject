@@ -1,9 +1,14 @@
 package com.marswilliams.apps.sweettweets.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -122,8 +127,27 @@ public class ComposeActivity extends AppCompatActivity {
 
     public void onClose(View view) {
         // this should take you back to the timeline without posting the data
-        Toast.makeText(this, "closed", Toast.LENGTH_SHORT).show();
-        setResult(RESULT_CANCELED);
-        finish();
+        Resources.Theme theme = getResources().newTheme();
+        theme.applyStyle(R.style.AlertDialogCustom, true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(this, theme))
+                    .setIcon(R.drawable.pill_filled)
+                    .setMessage("You haven't posted your tweet. Are you sure you want to close this activity?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            setResult(RESULT_CANCELED);
+                            finish();
+                        }
+
+                    })
+                    .setNegativeButton("No", null)
+                    .create();
+            dialog.show();
+            Button nButton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+            nButton.setTextColor(getResources().getColor(R.color.twitter_red, null));
+            Button pButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            pButton.setTextColor(getResources().getColor(R.color.twitter_red_light, null));
+        }
     }
 }

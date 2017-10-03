@@ -6,23 +6,17 @@ android:layout_height="match_parent"
 tools:context="com.marswilliams.apps.sweettweets.activities.ComposeActivity"
 android:padding="6dp">
 
-<!--<ImageView-->
-    <!--android:layout_width="50dp"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:id="@+id/ivUserProfileImage"-->
-    <!--android:background="@color/twitter_gray"-->
-    <!--android:contentDescription="@string/media"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:layout_alignStart="@+id/etNewTweet" />-->
-
     <Button
         android:id="@+id/btnClose"
         style="@style/Widget.AppCompat.Button.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/etNewTweet"
+        android:layout_width="@dimen/fab_width"
+        android:layout_height="@dimen/fab_height"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
+        android:background="@drawable/pill_filled"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
         android:onClick="onClose"
         android:text="@string/close" />
 
@@ -31,12 +25,16 @@ android:padding="6dp">
         android:id="@+id/etNewTweet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_below="@+id/btnClose"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginTop="@dimen/tweet_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/tweet_compose_margin"
+        android:autoLink="all"
+        android:linksClickable="true"
+        android:layout_centerVertical="true"
         android:hint="@string/compose_hint"
+        android:drawableStart="@drawable/ic_profile_image_placeholder"
+        android:drawablePadding="@dimen/tweet_profile_image_margin"
         android:inputType="textMultiLine" />
 
 <Button
@@ -45,7 +43,10 @@ android:padding="6dp">
     android:layout_height="wrap_content"
     android:layout_alignParentEnd="true"
     android:layout_alignParentBottom="true"
-    android:textColorHint="#00aced"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+    android:background="@drawable/pill_filled"
+    android:textColorHint="@color/twitter_blue"
     android:text="@string/tweet" />
 
 </RelativeLayout>

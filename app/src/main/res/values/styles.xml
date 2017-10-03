@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!--
@@ -14,6 +15,25 @@
         <item name="colorPrimary">@color/twitter_blue</item>
         <item name="colorPrimaryDark">@color/twitter_dark_gray</item>
         <item name="colorAccent">@color/twitter_red</item>
+        <item name="android:colorBackground">@android:color/background_light</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColorPrimary">@color/twitter_blue</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/pill_filled</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">@android:color/white</item>
+        <item name="android:backgroundTintMode" tools:targetApi="lollipop">src_in</item>
+        <item name="android:headerDividersEnabled">true</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
 </resources>

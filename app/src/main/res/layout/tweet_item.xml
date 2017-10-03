@@ -64,7 +64,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/ic_comment"/>
+            app:srcCompat="@drawable/ic_comment"/>
 
         <TextView
             android:id="@+id/tvReplyCount"
@@ -92,7 +92,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/ic_favorite"/>
+            app:srcCompat="@drawable/ic_favorite"/>
 
         <TextView
             android:id="@+id/tvFavoriteCount"
@@ -106,7 +106,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/ic_direct_message"/>
+            app:srcCompat="@drawable/ic_direct_message"/>
     </LinearLayout>
 
 </RelativeLayout>

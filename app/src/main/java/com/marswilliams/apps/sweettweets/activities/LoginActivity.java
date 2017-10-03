@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 import com.marswilliams.apps.sweettweets.R;
@@ -14,8 +15,9 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+		setContentView(R.layout.activity_login);
 	}
 
 

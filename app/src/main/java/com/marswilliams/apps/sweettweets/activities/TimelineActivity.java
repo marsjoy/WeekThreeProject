@@ -182,7 +182,7 @@ public class TimelineActivity extends AppCompatActivity {
             tweetAdapter.notifyItemInserted(0);
             rvTweets.scrollToPosition(0);
         } else {
-            Toast.makeText(this, "Unable to submit tweet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.unable_to_submit_tweet), Toast.LENGTH_SHORT).show();
         }
     }
 }

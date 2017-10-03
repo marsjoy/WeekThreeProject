@@ -14,4 +14,6 @@
     <string name="max_lines">1</string>
     <string name="welcome">Welcome to Twitter</string>
     <string name="welcome_detail">See what\'s happening in the world right now.</string>
+    <string name="profile_image_placeholder">profile image placeholder</string>
+    <string name="unable_to_submit_tweet">Sorry, but we weren\'t able to post your tweet</string>
 </resources>

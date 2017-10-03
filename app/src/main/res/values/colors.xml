@@ -9,5 +9,6 @@
     <color name="twitter_light_gray">#AAB8C2</color>
     <color name="twitter_extra_light_gray">#e1e8ed</color>
     <color name="twitter_red">#e0245e</color>
+    <color name="twitter_red_light">#70e0245e</color>
     <color name="translucent_highlighted">#4bFFFF00</color>
 </resources>
