@@ -13,5 +13,5 @@
     <string name="close">X</string>
     <string name="max_lines">1</string>
     <string name="welcome">Welcome to Twitter</string>
-    <string name="welcome_detail">See what is happening in the word right now.</string>
+    <string name="welcome_detail">See what\'s happening in the world right now.</string>
 </resources>

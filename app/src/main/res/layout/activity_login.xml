@@ -3,25 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/twitter_blue"
-    android:elevation="0dp"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@color/twitter_blue"
     android:paddingEnd="@dimen/activity_horizontal_margin"
     android:paddingStart="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@android:style/Theme.NoTitleBar"
     tools:context=".activities.LoginActivity">
-
-    <ImageView
-        android:id="@+id/ivLogo"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:elevation="0dp"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/ic_twitter_logo_login" />
 
     <TextView
         android:id="@+id/tvWelcome"
@@ -40,14 +28,15 @@
         android:id="@+id/tvWelcomeDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tvWelcome"
         android:elevation="5dp"
         android:text="@string/welcome_detail"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@android:color/white"
+        android:textSize="@dimen/welcome_detail_text_size"
         android:visibility="visible"
-        tools:text="@string/welcome_detail"
-        android:layout_below="@+id/tvWelcome"
-        android:layout_alignParentStart="true" />
+        tools:text="@string/welcome_detail" />
 
     <Button
         android:id="@+id/ibLogin"
@@ -58,10 +47,24 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="48dp"
-        android:background="@drawable/pill_hollow"
+        android:background="@drawable/pill_filled"
+        android:elevation="8dp"
         android:onClick="loginToRest"
         android:text="@string/login_label"
         android:textColor="@android:color/white" />
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="@dimen/twitter_logo_image_width"
+        android:layout_height="@dimen/twitter_logo_image_height"
+        android:adjustViewBounds="false"
+        android:baselineAlignBottom="true"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/ic_twitter_logo_login"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/tvWelcomeDetail" />
 
 
 </RelativeLayout>
