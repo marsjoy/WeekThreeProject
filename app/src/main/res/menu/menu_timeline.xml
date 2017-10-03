@@ -2,10 +2,5 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.marswilliams.apps.sweettweets.activities.TimelineActivity">
-    <item
-        android:id="@+id/itCompose"
-        android:icon="@drawable/ic_compose"
-        app:showAsAction="always"
-        android:title="@string/compose_label" />
 </menu>
 

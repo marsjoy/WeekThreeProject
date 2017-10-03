@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -24,8 +25,8 @@
         android:layout_height="match_parent">
 
         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabCompose"
             app:backgroundTint="@color/twitter_blue"
-            android:
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
@@ -33,11 +34,11 @@
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             app:elevation="@dimen/fab_elevation"
             app:fabSize="normal"
-            app:srcCompat="@drawable/vector_compose_fab"
+            app:srcCompat="@drawable/ic_compose_fab"
             app:pressedTranslationZ="@dimen/fab_elevation"
             app:rippleColor="@android:color/white"/>
 
     </FrameLayout>
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
 

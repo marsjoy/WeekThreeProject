@@ -3,15 +3,17 @@ package com.marswilliams.apps.sweettweets.activities;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -44,6 +46,9 @@ public class TimelineActivity extends AppCompatActivity {
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView rvTweets;
     InternetCheckReceiver broadcastReceiver;
+    FloatingActionButton fab;
+    private Toolbar toolbar;
+
     private long max_id = 1;
 
     @Override
@@ -123,6 +128,16 @@ public class TimelineActivity extends AppCompatActivity {
                 R.color.twitter_light_gray,
                 R.color.twitter_red);
 
+        fab = (FloatingActionButton) findViewById(R.id.fabCompose);
+        fab.setHapticFeedbackEnabled(true);
+        fab.setOnClickListener(new FloatingActionButton.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), ComposeActivity.class);
+                startActivityForResult(i, REQUEST_CODE_COMPOSE);
+            }
+        });
+
         initialPopulateTimeline();
     }
 
@@ -155,19 +170,6 @@ public class TimelineActivity extends AppCompatActivity {
         // Inflate the menu
         getMenuInflater().inflate(R.menu.menu_timeline, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch(item.getItemId()) {
-            case R.id.itCompose:
-                Intent i = new Intent(this, ComposeActivity.class);
-                startActivityForResult(i, REQUEST_CODE_COMPOSE);
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
     }
 
     @Override

@@ -59,7 +59,7 @@
         android:adjustViewBounds="false"
         android:baselineAlignBottom="true"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_twitter_logo_login"
+        app:srcCompat="@drawable/ic_twitter_logo"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
 
