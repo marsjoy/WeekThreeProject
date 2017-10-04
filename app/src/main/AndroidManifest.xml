@@ -36,7 +36,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.TimelineActivity" />
-        <activity android:name=".fragments.ComposeTweetDialogFragment"/>
     </application>
 
 </manifest>

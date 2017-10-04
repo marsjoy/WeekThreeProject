@@ -1,6 +1,5 @@
 package com.marswilliams.apps.sweettweets.fragments;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -9,6 +8,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -31,9 +34,11 @@ import org.json.JSONObject;
 import cz.msebera.android.httpclient.Header;
 
 public class ComposeTweetDialogFragment extends DialogFragment {
+    final private int maxLength = 140;
     TwitterClient client;
     OnTweetComposed tweetComposed;
-    Fragment fragment;
+    EditText etNewTweet;
+    TextView tvCharacterCount;
 
     public ComposeTweetDialogFragment() {
     }
@@ -64,13 +69,18 @@ public class ComposeTweetDialogFragment extends DialogFragment {
         client = TwitterApplication.getRestClient();
 
         // Get field from view
-        final EditText etNewTweet = (EditText) view.findViewById(R.id.etNewTweet);
+        etNewTweet = (EditText) view.findViewById(R.id.etNewTweet);
 
         // Show soft keyboard automatically and request focus to field
         etNewTweet.requestFocus();
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        ;
+
+        etNewTweet.setFilters(new InputFilter[]{
+                new InputFilter.LengthFilter(maxLength)
+        });
+
+        tvCharacterCount = (TextView) view.findViewById(R.id.tvCharacterCount);
 
         // Find submit button and set a click listener
         Button btSubmitNewTweet = (Button) view.findViewById(R.id.btSubmitNewTweet);
@@ -137,6 +147,34 @@ public class ComposeTweetDialogFragment extends DialogFragment {
                     nButton.setTextColor(getResources().getColor(R.color.twitter_red, null));
                     Button pButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
                     pButton.setTextColor(getResources().getColor(R.color.twitter_red_light, null));
+                }
+            }
+        });
+
+        initCharacterCount();
+    }
+
+    public void initCharacterCount() {
+        etNewTweet.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tvCharacterCount.setText(String.valueOf(maxLength - s.length()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 140) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        tvCharacterCount.setTextColor(getResources().getColor(R.color.twitter_red, null));
+                    }
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        tvCharacterCount.setTextColor(getResources().getColor(R.color.twitter_dark_gray, null));
+                    }
                 }
             }
         });

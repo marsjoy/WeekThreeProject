@@ -5,12 +5,15 @@
     <dimen name="tweet_margin">16dp</dimen>
     <dimen name="tweet_compose_margin">72dp</dimen>
     <dimen name="tweet_username_margin">6dp</dimen>
+    <dimen name="tweet_character_count_margin">2dp</dimen>
     <dimen name="tweet_profile_image_margin">10dp</dimen>
     <dimen name="tweet_profile_image_height">48dp</dimen>
     <dimen name="tweet_profile_image_width">48dp</dimen>
     <dimen name="twitter_logo_image_width">96dp</dimen>
     <dimen name="fab_width">48dp</dimen>
     <dimen name="fab_height">48dp</dimen>
+    <dimen name="close_button_width">28dp</dimen>
+    <dimen name="close_button_height">28dp</dimen>
     <dimen name="fab_elevation">8dp</dimen>
     <dimen name="button_elevation">8dp</dimen>
     <dimen name="welcome_text_size">48sp</dimen>

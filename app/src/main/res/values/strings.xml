@@ -9,6 +9,8 @@
     <string name="snackbar_text_internet_available">Connected to Internet</string>
     <string name="tweet">Tweet</string>
     <string name="compose_hint">Tweet something sweet</string>
+    <string name="character_count">140</string>
+    <string name="characters_remaining">characters remaining</string>
     <string name="close">X</string>
     <string name="max_lines">1</string>
     <string name="welcome">Welcome to Twitter</string>
