@@ -9,7 +9,6 @@
     <dimen name="tweet_profile_image_height">48dp</dimen>
     <dimen name="tweet_profile_image_width">48dp</dimen>
     <dimen name="twitter_logo_image_width">96dp</dimen>
-    <dimen name="twitter_logo_image_height">96dp</dimen>
     <dimen name="fab_width">48dp</dimen>
     <dimen name="fab_height">48dp</dimen>
     <dimen name="fab_elevation">8dp</dimen>
@@ -17,5 +16,4 @@
     <dimen name="welcome_text_size">48sp</dimen>
     <dimen name="welcome_detail_text_size">28sp</dimen>
     <dimen name="login_button_height">48dp</dimen>
-    <dimen name="login_button_margin">48dp</dimen>
 </resources>

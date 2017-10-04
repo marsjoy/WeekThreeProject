@@ -1,10 +1,10 @@
 package com.marswilliams.apps.sweettweets.activities;
 
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -14,12 +14,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.marswilliams.apps.sweettweets.R;
 import com.marswilliams.apps.sweettweets.TwitterApplication;
 import com.marswilliams.apps.sweettweets.adapters.TweetAdapter;
+import com.marswilliams.apps.sweettweets.fragments.ComposeTweetDialogFragment;
 import com.marswilliams.apps.sweettweets.helpers.EndlessRecyclerViewScrollListener;
 import com.marswilliams.apps.sweettweets.models.Tweet;
 import com.marswilliams.apps.sweettweets.networking.TwitterClient;
@@ -27,14 +27,14 @@ import com.marswilliams.apps.sweettweets.receivers.InternetCheckReceiver;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.marswilliams.apps.sweettweets.R.id.swipeContainer;
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements ComposeTweetDialogFragment.OnTweetComposed {
 
     private final int REQUEST_CODE_COMPOSE = 20;
 
@@ -133,12 +133,17 @@ public class TimelineActivity extends AppCompatActivity {
         fab.setOnClickListener(new FloatingActionButton.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), ComposeActivity.class);
-                startActivityForResult(i, REQUEST_CODE_COMPOSE);
+            showComposeTweetDialogFragment();
             }
         });
 
         initialPopulateTimeline();
+    }
+
+    private void showComposeTweetDialogFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        AtomicReference<ComposeTweetDialogFragment> composeTweetDialogFragment = new AtomicReference<>(ComposeTweetDialogFragment.newInstance());
+        composeTweetDialogFragment.get().show(fm, "fragment_compose");
     }
 
     private void populateTimeline(Long offset) {
@@ -173,16 +178,9 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_COMPOSE) {
-            Tweet tweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
-            tweets.add(0, tweet);
-            tweetAdapter.notifyItemInserted(0);
-            rvTweets.scrollToPosition(0);
-        } else {
-            Toast.makeText(this, getString(R.string.unable_to_submit_tweet), Toast.LENGTH_SHORT).show();
-        }
+    public void onTweetComposed(Tweet tweet) {
+        tweets.add(0, tweet);
+        tweetAdapter.notifyItemInserted(0);
+        rvTweets.scrollToPosition(0);
     }
 }

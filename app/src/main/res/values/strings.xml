@@ -9,11 +9,8 @@
     <string name="snackbar_text_internet_available">Connected to Internet</string>
     <string name="tweet">Tweet</string>
     <string name="compose_hint">Tweet something sweet</string>
-    <string name="compose_label">Compose</string>
     <string name="close">X</string>
     <string name="max_lines">1</string>
     <string name="welcome">Welcome to Twitter</string>
     <string name="welcome_detail">See what\'s happening in the world right now.</string>
-    <string name="profile_image_placeholder">profile image placeholder</string>
-    <string name="unable_to_submit_tweet">Sorry, but we weren\'t able to post your tweet</string>
 </resources>

@@ -36,7 +36,7 @@ public class Tweet {
         this.user = User.fromJSON(jsonObject.getJSONObject("user"));
         try {
             this.favorited = jsonObject.getBoolean("favorited");
-        } catch(JSONException e) {
+        } catch (JSONException e) {
             this.favorited = false;
         }
         try {
@@ -46,7 +46,7 @@ public class Tweet {
         }
         try {
             this.retweeted = jsonObject.getBoolean("retweeted");
-        } catch(JSONException e) {
+        } catch (JSONException e) {
             this.retweeted = false;
         }
         try {
@@ -67,7 +67,7 @@ public class Tweet {
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
         try {
             tweet.favorited = jsonObject.getBoolean("favorited");
-        } catch(JSONException e) {
+        } catch (JSONException e) {
             tweet.favorited = false;
         }
         try {
@@ -77,7 +77,7 @@ public class Tweet {
         }
         try {
             tweet.retweeted = jsonObject.getBoolean("retweeted");
-        } catch(JSONException e) {
+        } catch (JSONException e) {
             tweet.retweeted = false;
         }
         try {
@@ -105,14 +105,14 @@ public class Tweet {
         return tweets;
     }
 
-    public String getRelativeCreatedAt() {
+    public static String getRelativeCreatedAt(String createdAt) {
         if (TextUtils.isEmpty(createdAt)) {
             return "now";
         }
         return Utils.getRelativeTimeAgo(createdAt);
     }
 
-    public static String getRelativeCreatedAt(String createdAt) {
+    public String getRelativeCreatedAt() {
         if (TextUtils.isEmpty(createdAt)) {
             return "now";
         }
@@ -123,28 +123,28 @@ public class Tweet {
         return body;
     }
 
-    public long getUid() {
-        return uid;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public long getUid() {
+        return uid;
     }
 
     public void setUid(long uid) {
         this.uid = uid;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
     }
 
     public void setCreatedAt(String createdAt) {
@@ -159,7 +159,9 @@ public class Tweet {
         this.retweeted = retweeted;
     }
 
-    public long getRetweetCount() { return retweetCount; }
+    public long getRetweetCount() {
+        return retweetCount;
+    }
 
     public void setRetweetCount(int retweetCount) {
         this.retweetCount = retweetCount;

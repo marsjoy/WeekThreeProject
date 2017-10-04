@@ -21,42 +21,41 @@ public class InternetCheckReceiver extends BroadcastReceiver {
     private boolean internet = true;
     private View mView;
 
-    public InternetCheckReceiver(View view){
+    public InternetCheckReceiver(View view) {
         mView = view;
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG,"caught the change");
+        Log.d(TAG, "caught the change");
         ConnectivityManager cm =
-                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnected();
 
-        if(isConnected){
-            if(!internet){
-                Log.d(TAG,"Connected to Internet");
+        if (isConnected) {
+            if (!internet) {
+                Log.d(TAG, "Connected to Internet");
                 //Toast.makeText(context,"Connected to Internet",Toast.LENGTH_LONG).show();
-                Snackbar.make(mView,context.getString(R.string.snackbar_text_internet_available),
+                Snackbar.make(mView, context.getString(R.string.snackbar_text_internet_available),
                         Snackbar.LENGTH_LONG).show();
                 internet = true;
             }
 
-        }
-        else {
+        } else {
             internet = false;
             //Toast.makeText(context,"Disconnect from Internet",Toast.LENGTH_LONG).show();
-            Snackbar.make(mView,context.getString(R.string.snackbar_text_internet_lost),
+            Snackbar.make(mView, context.getString(R.string.snackbar_text_internet_lost),
                     Snackbar.LENGTH_LONG).show();
-            Log.d(TAG,"Disconnect from Internet");
+            Log.d(TAG, "Disconnect from Internet");
         }
 
 
     }
 
-    public boolean isInternetAvailable(){
+    public boolean isInternetAvailable() {
         return internet;
     }
 }

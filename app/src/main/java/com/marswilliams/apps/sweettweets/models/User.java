@@ -20,7 +20,8 @@ public class User {
     public String screenName;
     public String profileImageUrl;
 
-    public User() {}
+    public User() {
+    }
 
     public User(JSONObject object) throws JSONException {
         this.name = object.getString("name");
@@ -39,6 +40,36 @@ public class User {
         user.screenName = json.getString("screen_name");
         user.profileImageUrl = json.getString("profile_image_url");
         return user;
+    }
+
+    public static void getCurrentUser(final UserCallbackInterface handler) {
+        TwitterClient client = TwitterApplication.getRestClient();
+        client.verifyCredentials(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    handler.onUserAvailable(User.fromJSON(response));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
     }
 
     public String getName() {
@@ -75,36 +106,6 @@ public class User {
 
     public interface UserCallbackInterface {
         void onUserAvailable(User currentUser);
-    }
-
-    public static void getCurrentUser(final UserCallbackInterface handler) {
-        TwitterClient client = TwitterApplication.getRestClient();
-        client.verifyCredentials(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                try {
-                    handler.onUserAvailable(User.fromJSON(response));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-        });
     }
 }
 

@@ -29,6 +29,14 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         mTweets = tweets;
     }
 
+    public static int getCount() {
+        return mTweets.size();
+    }
+
+    public static Tweet getAt(int position) {
+        return mTweets.get(position);
+    }
+
     // create Viewholder class
     // for each row, inflate the layout and cache references into viewholder
     @Override
@@ -59,6 +67,22 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         holder.tvCreatedAt.setText(tweet.getRelativeCreatedAt());
     }
 
+    @Override
+    public int getItemCount() {
+        return this.mTweets.size();
+    }
+
+    public void clear() {
+        int size = this.mTweets.size();
+        this.mTweets.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+
+    public void addAll(List<Tweet> list) {
+        mTweets.addAll(list);
+        notifyDataSetChanged();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivProfileImage;
         public TextView tvUserName;
@@ -71,33 +95,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
-            tvUserScreenName = (TextView) itemView.findViewById(R.id.tvUserScreenName) ;
+            tvUserScreenName = (TextView) itemView.findViewById(R.id.tvUserScreenName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvCreatedAt = (TextView) itemView.findViewById(R.id.tvCreatedAt);
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return this.mTweets.size();
-    }
-
-    public static int getCount() {
-        return mTweets.size();
-    }
-
-    public void clear(){
-        int size = this.mTweets.size();
-        this.mTweets.clear();
-        notifyItemRangeRemoved(0, size);
-    }
-
-    public void addAll(List<Tweet> list) {
-        mTweets.addAll(list);
-        notifyDataSetChanged();
-    }
-
-    public static Tweet getAt(int position) {
-        return mTweets.get(position);
     }
 }
