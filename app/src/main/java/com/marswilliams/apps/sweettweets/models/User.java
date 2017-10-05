@@ -3,6 +3,7 @@ package com.marswilliams.apps.sweettweets.models;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.marswilliams.apps.sweettweets.TwitterApplication;
 import com.marswilliams.apps.sweettweets.networking.TwitterClient;
+import com.orm.SugarRecord;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,12 +12,12 @@ import org.parceler.Parcel;
 
 import cz.msebera.android.httpclient.Header;
 
-@Parcel
-public class User {
+@Parcel(analyze = User.class)
+public class User extends SugarRecord<User> {
 
     // List the attributes
     public String name;
-    public long uid;
+    public long twitterUserId;
     public String screenName;
     public String profileImageUrl;
 
@@ -25,10 +26,18 @@ public class User {
 
     public User(JSONObject object) throws JSONException {
         this.name = object.getString("name");
-        this.uid = object.getLong("id");
+        this.twitterUserId = object.getLong("id");
         this.screenName = object.getString("screen_name");
         this.profileImageUrl = object.getString("profile_image_url");
     }
+
+    public User(String name, long twitterUserId, String screenName, String profileImageUrl) {
+        this.name = name;
+        this.twitterUserId = twitterUserId;
+        this.screenName = screenName;
+        this.profileImageUrl = profileImageUrl;
+    }
+
 
     // Deserialize the JSON
     public static User fromJSON(JSONObject json) throws JSONException {
@@ -36,7 +45,7 @@ public class User {
 
         // Extract and fill values
         user.name = json.getString("name");
-        user.uid = json.getLong("id");
+        user.twitterUserId = json.getLong("id");
         user.screenName = json.getString("screen_name");
         user.profileImageUrl = json.getString("profile_image_url");
         return user;
@@ -80,12 +89,12 @@ public class User {
         this.name = name;
     }
 
-    public long getUid() {
-        return uid;
+    public long getTwitterUserId() {
+        return twitterUserId;
     }
 
-    public void setUid(long uid) {
-        this.uid = uid;
+    public void setTwitterUserId(long twitterUserId) {
+        this.twitterUserId = twitterUserId;
     }
 
     public String getScreenName() {

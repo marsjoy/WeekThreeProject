@@ -69,7 +69,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-
         client = TwitterApplication.getRestClient();
 
         // find recyclerview
@@ -99,7 +98,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 if (broadcastReceiver.isInternetAvailable()) {
                     int position = TweetAdapter.getCount() - 1;
-                    max_id = TweetAdapter.getAt(position).getUid();
+                    max_id = TweetAdapter.getAt(position).getTweetId();
                     populateTimeline(max_id);
                 }
             }
@@ -111,7 +110,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
             public void onRefresh() {
                 if (broadcastReceiver.isInternetAvailable()) {
                     int position = TweetAdapter.getCount() - 1;
-                    max_id = TweetAdapter.getAt(position).getUid();
+                    max_id = TweetAdapter.getAt(position).getTweetId();
                     populateTimeline(max_id);
                 } else {
                     swipeRefreshLayout.setRefreshing(false);

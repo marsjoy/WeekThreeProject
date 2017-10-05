@@ -4,9 +4,6 @@ import android.app.Application;
 import android.content.Context;
 
 import com.marswilliams.apps.sweettweets.networking.TwitterClient;
-import com.raizlabs.android.dbflow.config.FlowConfig;
-import com.raizlabs.android.dbflow.config.FlowLog;
-import com.raizlabs.android.dbflow.config.FlowManager;
 
 /*
  * This is the Android application itself and is used to configure various settings
@@ -27,9 +24,6 @@ public class TwitterApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        FlowManager.init(new FlowConfig.Builder(this).build());
-        FlowLog.setMinimumLoggingLevel(FlowLog.Level.V);
 
         TwitterApplication.context = this;
     }

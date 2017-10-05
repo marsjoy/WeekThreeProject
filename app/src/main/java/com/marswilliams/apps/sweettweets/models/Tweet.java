@@ -3,6 +3,7 @@ package com.marswilliams.apps.sweettweets.models;
 import android.text.TextUtils;
 
 import com.marswilliams.apps.sweettweets.helpers.Utils;
+import com.orm.SugarRecord;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,16 +13,16 @@ import org.parceler.Parcel;
 import java.util.ArrayList;
 import java.util.List;
 
-@Parcel
-public class Tweet {
+@Parcel(analyze = Tweet.class)
+public class Tweet extends SugarRecord<Tweet> {
 
     // List out attributes
-    public String body;
-    public long uid; // Database ID for the tweet
-    public User user;
-    public String createdAt;
-    public int favoriteCount;
-    public boolean favorited;
+    String body;
+    long tweetId; // Database ID for the tweet
+    User user;
+    String createdAt;
+    int favoriteCount;
+    boolean favorited;
     int retweetCount;
     boolean retweeted;
 
@@ -31,7 +32,7 @@ public class Tweet {
 
     public Tweet(JSONObject jsonObject) throws JSONException {
         this.body = jsonObject.getString("text");
-        this.uid = jsonObject.getLong("id");
+        this.tweetId = jsonObject.getLong("id");
         this.createdAt = jsonObject.getString("created_at");
         this.user = User.fromJSON(jsonObject.getJSONObject("user"));
         try {
@@ -62,7 +63,7 @@ public class Tweet {
 
         // Extract the values from JSON
         tweet.body = jsonObject.getString("text");
-        tweet.uid = jsonObject.getLong("id");
+        tweet.tweetId = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
         try {
@@ -127,12 +128,12 @@ public class Tweet {
         this.body = body;
     }
 
-    public long getUid() {
-        return uid;
+    public long getTweetId() {
+        return tweetId;
     }
 
-    public void setUid(long uid) {
-        this.uid = uid;
+    public void setTweetId(long tweetId) {
+        this.tweetId = tweetId;
     }
 
     public User getUser() {
