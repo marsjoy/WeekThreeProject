@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -30,24 +29,23 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
-import static com.marswilliams.apps.sweettweets.R.id.swipeContainer;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class TimelineActivity extends AppCompatActivity implements ComposeTweetDialogFragment.OnTweetComposed {
-
-    private final int REQUEST_CODE_COMPOSE = 20;
-
-    static final String TAG = TimelineActivity.class.getSimpleName();
+    @BindView(R.id.rvTweet)
+    RecyclerView rvTweets;
+    @BindView(R.id.swipeContainer)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.fabCompose)
+    FloatingActionButton fabCompose;
 
     TwitterClient client;
     TweetAdapter tweetAdapter;
     List<Tweet> tweets;
-    SwipeRefreshLayout swipeRefreshLayout;
-    RecyclerView rvTweets;
     InternetCheckReceiver broadcastReceiver;
-    FloatingActionButton fab;
-    private Toolbar toolbar;
 
     private long max_id = 1;
 
@@ -69,19 +67,15 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-        client = TwitterApplication.getRestClient();
+        ButterKnife.bind(this);
 
-        // find recyclerview
-        rvTweets = (RecyclerView) findViewById(R.id.rvTweet);
+        client = TwitterApplication.getRestClient();
 
         // init the arraylist (data source)
         tweets = new ArrayList<>();
 
         // construct the adapter from this data source
         tweetAdapter = new TweetAdapter(tweets);
-
-        // find the swipe container
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(swipeContainer);
 
         // RecyclerView setup (layout manager, user adapter
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
@@ -126,23 +120,15 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
                 R.color.twitter_dark_gray,
                 R.color.twitter_light_gray,
                 R.color.twitter_red);
-
-        fab = (FloatingActionButton) findViewById(R.id.fabCompose);
-        fab.setHapticFeedbackEnabled(true);
-        fab.setOnClickListener(new FloatingActionButton.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            showComposeTweetDialogFragment();
-            }
-        });
-
+        fabCompose.setHapticFeedbackEnabled(true);
         initialPopulateTimeline();
     }
 
-    private void showComposeTweetDialogFragment() {
+    @OnClick(R.id.fabCompose)
+    public void composeTweet(View v) {
         FragmentManager fm = getSupportFragmentManager();
-        AtomicReference<ComposeTweetDialogFragment> composeTweetDialogFragment = new AtomicReference<>(ComposeTweetDialogFragment.newInstance());
-        composeTweetDialogFragment.get().show(fm, "fragment_compose");
+        ComposeTweetDialogFragment composeTweetDialogFragment = ComposeTweetDialogFragment.newInstance();
+        composeTweetDialogFragment.show(fm, "fragment_compose");
     }
 
     private void populateTimeline(Long offset) {
