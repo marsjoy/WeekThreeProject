@@ -46,13 +46,13 @@ The following **bonus** features are implemented:
 The following **additional** features are implemented:
 
 * [x] Implements robust error handling, [check if internet is available](http://guides.codepath.com/android/Sending-and-Managing-Network-Requests#checking-for-network-connectivity), handle error cases, network failures
-
+* [x] In compose fragment, user profile image is shown
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-![Video Walkthrough](https://media.giphy.com/media/3ov9k7JwbCsgqoXs0E/giphy.gif)
+![Video Walkthrough](https://i.imgur.com/D9GLYFG.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 

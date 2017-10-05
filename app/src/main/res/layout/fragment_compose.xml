@@ -34,8 +34,7 @@
             android:id="@+id/ivComposeProfileImage"
             android:layout_width="@dimen/tweet_profile_image_width"
             android:layout_height="@dimen/tweet_profile_image_height"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            app:srcCompat="@drawable/ic_profile_image_placeholder"/>
+            android:layout_marginStart="@dimen/activity_horizontal_margin"/>
 
         <EditText
             android:id="@+id/etNewTweet"

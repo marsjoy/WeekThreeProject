@@ -24,16 +24,15 @@
 
 <TextView
     android:id="@+id/tvUserScreenName"
-    android:layout_alignBottom="@+id/tvUserName"
     android:layout_toEndOf="@+id/tvUserName"
+    android:layout_alignBottom="@+id/tvUserName"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 
 <TextView
     android:id="@+id/tvCreatedAt"
     android:layout_below="@+id/tvUserScreenName"
-    android:layout_alignParentEnd="true"
-    android:layout_alignParentTop="true"
+    android:layout_alignStart="@id/tvUserName"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 

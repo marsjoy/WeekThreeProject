@@ -19,19 +19,23 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.marswilliams.apps.sweettweets.R;
 import com.marswilliams.apps.sweettweets.TwitterApplication;
 import com.marswilliams.apps.sweettweets.models.Tweet;
+import com.marswilliams.apps.sweettweets.models.User;
 import com.marswilliams.apps.sweettweets.networking.TwitterClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class ComposeTweetDialogFragment extends DialogFragment {
     final private int maxLength = 140;
@@ -39,6 +43,7 @@ public class ComposeTweetDialogFragment extends DialogFragment {
     OnTweetComposed tweetComposed;
     EditText etNewTweet;
     TextView tvCharacterCount;
+    ImageView ivComposeProfileImage;
 
     public ComposeTweetDialogFragment() {
     }
@@ -81,6 +86,19 @@ public class ComposeTweetDialogFragment extends DialogFragment {
         });
 
         tvCharacterCount = (TextView) view.findViewById(R.id.tvCharacterCount);
+
+        ivComposeProfileImage = (ImageView) view.findViewById(R.id.ivComposeProfileImage);
+
+        User.getCurrentUser(new User.UserCallbackInterface() {
+            @Override
+            public void onUserAvailable(User currentUser) {
+                Glide.with(getContext())
+                        .load(currentUser.getProfileImageUrl())
+                        .placeholder(R.drawable.ic_profile_image_placeholder)
+                        .bitmapTransform(new RoundedCornersTransformation(ivComposeProfileImage.getContext(), 25, 0))
+                        .into(ivComposeProfileImage);
+            }
+        });
 
         // Find submit button and set a click listener
         Button btSubmitNewTweet = (Button) view.findViewById(R.id.btSubmitNewTweet);
