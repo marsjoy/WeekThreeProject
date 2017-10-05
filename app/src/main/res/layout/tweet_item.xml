@@ -47,6 +47,7 @@
     android:maxLines="@string/max_lines"
     android:ellipsize="end"
     android:textAppearance="@android:style/TextAppearance.Medium"
+    android:autoLink="all"
     android:linksClickable="true"/>
 
     <LinearLayout
