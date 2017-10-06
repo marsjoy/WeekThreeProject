@@ -2,7 +2,6 @@ package com.marswilliams.apps.sweettweets.activities;
 
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -42,7 +42,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.fabCompose)
     FloatingActionButton fabCompose;
-    @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
+    @BindView(R.id.toolbar) Toolbar toolbar;
 
     TwitterClient client;
     TweetAdapter tweetAdapter;
@@ -73,6 +73,10 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
 
         client = TwitterApplication.getRestClient();
 
+        setSupportActionBar(toolbar);
+        setTitle(getString(R.string.app_name));
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+
         // init the arraylist (data source)
         tweets = new ArrayList<>();
 
@@ -99,8 +103,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
                 }
             }
         });
-
-        collapsingToolbar.setTitle("Sweet Tweets");
 
         // Setup refresh listener which triggers new data loading
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
