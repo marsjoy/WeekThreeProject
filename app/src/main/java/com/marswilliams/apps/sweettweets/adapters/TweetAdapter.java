@@ -22,7 +22,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
@@ -78,13 +77,12 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 .getString(R.string.formatted_user_screen_name, tweet.getUser().getScreenName()));
         holder.tvBody.setText(tweet.getBody());
         holder.tvCreatedAt.setText(tweet.getRelativeCreatedAt());
-    }
-
-    @OnClick(R.id.rootView)
-    public void openTweetDetails(View v){
-        Intent intent = new Intent(context, TweetDetailsActivity.class);
-        intent.putExtra(TweetDetailsActivity.EXTRA_TWEET, Parcels.wrap(tweet));
-        context.startActivity(intent);
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTweetDetails(context, tweet);
+            }
+        });
     }
 
     @Override
