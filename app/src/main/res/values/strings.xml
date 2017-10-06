@@ -15,4 +15,7 @@
     <string name="max_lines">1</string>
     <string name="welcome">Welcome to Twitter</string>
     <string name="welcome_detail">See what\'s happening in the world right now.</string>
+    <string name="close_confirmation">You haven\'t posted your tweet. Are you sure you want to return to your home timeline?</string>
+    <string name="twitter_client">TwitterClient</string>
+    <string name="unable_to_fetch_tweets">Unable to fetch tweets</string>
 </resources>

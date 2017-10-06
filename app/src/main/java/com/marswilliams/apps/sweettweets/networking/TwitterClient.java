@@ -42,21 +42,24 @@ public class TwitterClient extends OAuthBaseClient {
                         context.getString(com.marswilliams.apps.sweettweets.R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
     }
 
-    public void getHomeTimeline(long max_id, AsyncHttpResponseHandler handler) {
+    public void getHomeTimeline(AsyncHttpResponseHandler handler) {
         String apiUrl = getApiUrl("statuses/home_timeline.json");
-        // specify params
+        // Can specify query string params directly or through RequestParams.
         RequestParams params = new RequestParams();
-        params.put("count", 25);
+        params.put("count", "25");
+        params.put("since_id", 1);
+        client.get(apiUrl, params, handler);
+    }
+
+    public void getHomeTimelinePage(long max_id, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/home_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("count", "25");
         params.put("since_id", 1);
         if (max_id > 1) { // for consecutive calls to this endpoint
             params.put("max_id", max_id); // would we want this to update based on the last id we got?
         }
-        getClient().get(apiUrl, params, handler);
-    }
-
-    public void getAccountSettings(AsyncHttpResponseHandler handler) {
-        String apiUrl = getApiUrl("account/settings.json");
-        getClient().get(apiUrl, handler);
+        client.get(apiUrl, params, handler);
     }
 
     public void verifyCredentials(AsyncHttpResponseHandler handler) {
