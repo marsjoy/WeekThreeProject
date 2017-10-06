@@ -10,10 +10,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.marswilliams.apps.sweettweets.R;
+import com.marswilliams.apps.sweettweets.TwitterApplication;
 import com.marswilliams.apps.sweettweets.models.Tweet;
+import com.marswilliams.apps.sweettweets.networking.TwitterClient;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
@@ -24,6 +28,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     // pass in the tweets array to the constructor
 
     private static List<Tweet> mTweets;
+    public TwitterClient client;
+    Context context;
 
     public TweetAdapter(List<Tweet> tweets) {
         mTweets = tweets;
@@ -41,7 +47,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     // for each row, inflate the layout and cache references into viewholder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+        context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View tweetView = inflater.inflate(R.layout.tweet_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(tweetView);
@@ -53,10 +59,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         // get the data according to the position
         Tweet tweet = mTweets.get(position);
-        Glide.with(holder.ivProfileImage.getContext())
+        Glide.with(context)
                 .load(tweet.getUser().getProfileImageUrl())
                 .placeholder(R.drawable.ic_profile_image_placeholder)
-                .bitmapTransform(new RoundedCornersTransformation(holder.ivProfileImage.getContext(), 25, 0))
+                .bitmapTransform(new RoundedCornersTransformation(context, 25, 0))
                 .into(holder.ivProfileImage);
 
         // populate the views according to this data
@@ -83,21 +89,28 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView ivProfileImage;
-        public TextView tvUserName;
-        public TextView tvUserScreenName;
-        public TextView tvBody;
-        public TextView tvCreatedAt;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.ivProfileImage)
+        ImageView ivProfileImage;
+        @BindView(R.id.tvUserName)
+        TextView tvUserName;
+        @BindView(R.id.tvUserScreenName)
+        TextView tvUserScreenName;
+        @BindView(R.id.tvBody)
+        TextView tvBody;
+        @BindView(R.id.tvCreatedAt)
+        TextView tvCreatedAt;
+        @BindView(R.id.ibRetweet)
+        ImageView ibRetweet;
+        @BindView(R.id.tvRetweetCount)
+        TextView tvRetweetCount;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
-            tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
-            tvUserScreenName = (TextView) itemView.findViewById(R.id.tvUserScreenName);
-            tvBody = (TextView) itemView.findViewById(R.id.tvBody);
-            tvCreatedAt = (TextView) itemView.findViewById(R.id.tvCreatedAt);
+            ButterKnife.bind(this, itemView);
+
+            client = TwitterApplication.getRestClient();
         }
     }
 }

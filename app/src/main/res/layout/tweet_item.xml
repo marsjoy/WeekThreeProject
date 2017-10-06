@@ -59,11 +59,12 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/ibMessage"
+            android:id="@+id/ibComment"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:scaleX="-1"
             android:backgroundTint="@android:color/transparent"
             app:srcCompat="@drawable/ic_comment" />
 
@@ -79,7 +80,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:backgroundTint="@android:color/transparent"
-            app:srcCompat="@drawable/ic_retweet" />
+            app:srcCompat="@drawable/ic_unretweet" />
 
         <TextView
             android:id="@+id/tvRetweetCount"
@@ -93,7 +94,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:backgroundTint="@android:color/transparent"
-            app:srcCompat="@drawable/ic_favorite" />
+            app:srcCompat="@drawable/ic_unfavorite" />
 
         <TextView
             android:id="@+id/tvFavoriteCount"
