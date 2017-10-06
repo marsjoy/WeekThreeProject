@@ -30,9 +30,17 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     private static List<Tweet> mTweets;
     public TwitterClient client;
     Context context;
+    private TweetAdapterListener mListener;
 
-    public TweetAdapter(List<Tweet> tweets) {
+    // Desfine an interface required by the ViewHolder
+    public interface TweetAdapterListener {
+        void onItemSelected(View view, int position);
+    }
+
+    // Pass in the Tweets array in the constructor
+    public TweetAdapter(List<Tweet> tweets, TweetAdapterListener listener) {
         mTweets = tweets;
+        mListener = listener;
     }
 
     public static int getCount() {
@@ -43,8 +51,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         return mTweets.get(position);
     }
 
-    // create Viewholder class
-    // for each row, inflate the layout and cache references into viewholder
+    // create ViewHolder class
+    // for each row, inflate the layout and cache references into ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
@@ -89,7 +97,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.ivProfileImage)
         ImageView ivProfileImage;
         @BindView(R.id.tvUserName)
@@ -111,6 +119,16 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             ButterKnife.bind(this, itemView);
 
             client = TwitterApplication.getRestClient();
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(mListener != null) {
+                // Get the position of the row element
+                int position = getAdapterPosition();
+                // Fire the listener callback
+                mListener.onItemSelected(v, position);
+            }
         }
     }
 }

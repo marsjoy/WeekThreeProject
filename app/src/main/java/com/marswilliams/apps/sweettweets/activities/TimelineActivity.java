@@ -1,8 +1,8 @@
 package com.marswilliams.apps.sweettweets.activities;
 
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -27,6 +27,7 @@ import com.marswilliams.apps.sweettweets.receivers.InternetCheckReceiver;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +35,21 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cz.msebera.android.httpclient.Header;
 
-public class TimelineActivity extends AppCompatActivity implements ComposeTweetDialogFragment.OnTweetComposed {
-    @BindView(R.id.rvTweet)
+import static com.marswilliams.apps.sweettweets.R.id.swipeContainer;
+import static com.marswilliams.apps.sweettweets.R.string.tweet;
+
+public class TimelineActivity extends AppCompatActivity implements ComposeTweetDialogFragment.OnTweetComposed, TweetAdapter.TweetAdapterListener {
+    public static final String TWEET_POSITION = "tweetPosition";
+    public static final int REQUEST_CODE_DETAILS = 30;
+
+    @BindView(R.id.rvTweets)
     RecyclerView rvTweets;
-    @BindView(R.id.swipeContainer)
+    @BindView(swipeContainer)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.fabCompose)
     FloatingActionButton fabCompose;
-    @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
 
     TwitterClient client;
     TweetAdapter tweetAdapter;
@@ -77,7 +84,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         tweets = new ArrayList<>();
 
         // construct the adapter from this data source
-        tweetAdapter = new TweetAdapter(tweets);
+        tweetAdapter = new TweetAdapter(tweets, this);
 
         // RecyclerView setup (layout manager, user adapter
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
@@ -95,12 +102,10 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
                 if (broadcastReceiver.isInternetAvailable()) {
                     int position = TweetAdapter.getCount() - 1;
                     max_id = TweetAdapter.getAt(position).getTweetId();
-                    populateTimeline(max_id);
+                    fetchNextPage(max_id);
                 }
             }
         });
-
-        collapsingToolbar.setTitle("Sweet Tweets");
 
         // Setup refresh listener which triggers new data loading
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -109,7 +114,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
                 if (broadcastReceiver.isInternetAvailable()) {
                     int position = TweetAdapter.getCount() - 1;
                     max_id = TweetAdapter.getAt(position).getTweetId();
-                    populateTimeline(max_id);
+                    fetchNextPage(max_id);
                 } else {
                     swipeRefreshLayout.setRefreshing(false);
                     Snackbar.make(swipeRefreshLayout.getRootView(), getString(R.string.snackbar_text_internet_lost),
@@ -125,7 +130,80 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
                 R.color.twitter_light_gray,
                 R.color.twitter_red);
         fabCompose.setHapticFeedbackEnabled(true);
-        initialPopulateTimeline();
+
+        populateTimeline();
+    }
+
+    private void populateTimeline() {
+        client.getHomeTimeline(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d(getString(R.string.twitter_client), response.toString());
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Log.d(getString(R.string.twitter_client), response.toString());
+                addItems(response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d(getString(R.string.twitter_client), responseString);
+                throwable.printStackTrace();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d(getString(R.string.twitter_client), errorResponse.toString());
+                throwable.printStackTrace();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                Log.d(getString(R.string.twitter_client), errorResponse.toString());
+                throwable.printStackTrace();
+            }
+        });
+    }
+
+    public void fetchNextPage(long max_id) {
+        client.getHomeTimelinePage(max_id, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d(getString(R.string.twitter_client), response.toString());
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Log.d(getString(R.string.twitter_client), response.toString());
+                tweetAdapter.clear();
+                addItems(response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d(getString(R.string.twitter_client), responseString);
+                throwable.printStackTrace();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d(getString(R.string.twitter_client), errorResponse.toString());
+                throwable.printStackTrace();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                Log.d(getString(R.string.twitter_client), errorResponse.toString());
+                throwable.printStackTrace();
+            }
+        });
+    }
+
+    public void addItems(JSONArray response) {
+        tweetAdapter.addAll(Tweet.fromJSONArray(response));
     }
 
     @OnClick(R.id.fabCompose)
@@ -133,30 +211,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         FragmentManager fm = getSupportFragmentManager();
         ComposeTweetDialogFragment composeTweetDialogFragment = ComposeTweetDialogFragment.newInstance();
         composeTweetDialogFragment.show(fm, "fragment_compose");
-    }
-
-    private void populateTimeline(Long offset) {
-        client.getHomeTimeline(offset, new JsonHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONArray response) {
-                tweetAdapter.addAll(Tweet.fromJSONArray(response));
-            }
-
-            @Override
-            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                if (errorResponse != null) {
-                    Log.d("DEBUG", errorResponse.toString());
-                } else {
-                    Log.d("DEBUG", "null error");
-                }
-            }
-        });
-    }
-
-    private void initialPopulateTimeline() {
-        tweetAdapter.clear();
-        populateTimeline(max_id);
     }
 
     @Override
@@ -171,5 +225,27 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         tweets.add(0, tweet);
         tweetAdapter.notifyItemInserted(0);
         rvTweets.scrollToPosition(0);
+    }
+
+    @Override
+    public void onItemSelected(View v, int position) {
+        Intent i = new Intent(this, TweetDetailsActivity.class);
+        i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+        i.putExtra(TWEET_POSITION, position);
+        startActivityForResult(i, REQUEST_CODE_DETAILS);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // If returning successfully from details
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAILS) {
+            // Deserialize the tweet and its position
+            Tweet newTweet = Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
+            int position = data.getIntExtra(TWEET_POSITION, 0);
+            tweets.set(position, newTweet);
+            tweetAdapter.notifyItemChanged(position);
+            rvTweets.scrollToPosition(position);
+        }
     }
 }
