@@ -7,6 +7,7 @@
     android:layout_marginEnd="@dimen/tweet_margin"
     android:layout_marginStart="@dimen/tweet_margin"
     android:layout_marginTop="@dimen/tweet_margin"
+    android:id="@+id/rootView"
     android:orientation="horizontal">
 
     <ImageView

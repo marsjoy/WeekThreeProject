@@ -1,6 +1,7 @@
 package com.marswilliams.apps.sweettweets.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,13 +12,17 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.marswilliams.apps.sweettweets.R;
 import com.marswilliams.apps.sweettweets.TwitterApplication;
+import com.marswilliams.apps.sweettweets.activities.TweetDetailsActivity;
 import com.marswilliams.apps.sweettweets.models.Tweet;
 import com.marswilliams.apps.sweettweets.networking.TwitterClient;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
@@ -30,17 +35,11 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     private static List<Tweet> mTweets;
     public TwitterClient client;
     Context context;
-    private TweetAdapterListener mListener;
-
-    // Desfine an interface required by the ViewHolder
-    public interface TweetAdapterListener {
-        void onItemSelected(View view, int position);
-    }
+    Tweet tweet;
 
     // Pass in the Tweets array in the constructor
-    public TweetAdapter(List<Tweet> tweets, TweetAdapterListener listener) {
+    public TweetAdapter(List<Tweet> tweets) {
         mTweets = tweets;
-        mListener = listener;
     }
 
     public static int getCount() {
@@ -66,7 +65,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         // get the data according to the position
-        Tweet tweet = mTweets.get(position);
+        tweet = mTweets.get(position);
         Glide.with(context)
                 .load(tweet.getUser().getProfileImageUrl())
                 .placeholder(R.drawable.ic_profile_image_placeholder)
@@ -79,6 +78,13 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 .getString(R.string.formatted_user_screen_name, tweet.getUser().getScreenName()));
         holder.tvBody.setText(tweet.getBody());
         holder.tvCreatedAt.setText(tweet.getRelativeCreatedAt());
+    }
+
+    @OnClick(R.id.rootView)
+    public void openTweetDetails(View v){
+        Intent intent = new Intent(context, TweetDetailsActivity.class);
+        intent.putExtra(TweetDetailsActivity.EXTRA_TWEET, Parcels.wrap(tweet));
+        context.startActivity(intent);
     }
 
     @Override
@@ -97,7 +103,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.rootView)
+        public View rootView;
         @BindView(R.id.ivProfileImage)
         ImageView ivProfileImage;
         @BindView(R.id.tvUserName)
@@ -120,15 +128,11 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
             client = TwitterApplication.getRestClient();
         }
+    }
 
-        @Override
-        public void onClick(View v) {
-            if(mListener != null) {
-                // Get the position of the row element
-                int position = getAdapterPosition();
-                // Fire the listener callback
-                mListener.onItemSelected(v, position);
-            }
-        }
+    public void openTweetDetails(Context context, Tweet tweet){
+        Intent intent = new Intent(context, TweetDetailsActivity.class);
+        intent.putExtra(TweetDetailsActivity.EXTRA_TWEET, Parcels.wrap(tweet));
+        context.startActivity(intent);
     }
 }

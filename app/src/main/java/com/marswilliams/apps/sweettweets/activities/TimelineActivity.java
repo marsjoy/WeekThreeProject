@@ -38,9 +38,8 @@ import butterknife.OnClick;
 import cz.msebera.android.httpclient.Header;
 
 import static com.marswilliams.apps.sweettweets.R.id.swipeContainer;
-import static com.marswilliams.apps.sweettweets.R.string.tweet;
 
-public class TimelineActivity extends AppCompatActivity implements ComposeTweetDialogFragment.OnTweetComposed, TweetAdapter.TweetAdapterListener {
+public class TimelineActivity extends AppCompatActivity implements ComposeTweetDialogFragment.OnTweetComposed {
     public static final String TWEET_POSITION = "tweetPosition";
     public static final int REQUEST_CODE_DETAILS = 30;
 
@@ -84,7 +83,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         tweets = new ArrayList<>();
 
         // construct the adapter from this data source
-        tweetAdapter = new TweetAdapter(tweets, this);
+        tweetAdapter = new TweetAdapter(tweets);
 
         // RecyclerView setup (layout manager, user adapter
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
@@ -225,14 +224,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         tweets.add(0, tweet);
         tweetAdapter.notifyItemInserted(0);
         rvTweets.scrollToPosition(0);
-    }
-
-    @Override
-    public void onItemSelected(View v, int position) {
-        Intent i = new Intent(this, TweetDetailsActivity.class);
-        i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-        i.putExtra(TWEET_POSITION, position);
-        startActivityForResult(i, REQUEST_CODE_DETAILS);
     }
 
     @Override
