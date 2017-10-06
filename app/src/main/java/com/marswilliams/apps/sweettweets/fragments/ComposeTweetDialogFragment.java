@@ -34,26 +34,48 @@ import com.marswilliams.apps.sweettweets.networking.TwitterClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class ComposeTweetDialogFragment extends DialogFragment {
     final private int maxLength = 140;
+    @BindView(R.id.etNewTweet)
+    EditText etNewTweet;
+    @BindView(R.id.tvCharacterCount)
+    TextView tvCharacterCount;
+    @BindView(R.id.ivComposeProfileImage)
+    ImageView ivComposeProfileImage;
     TwitterClient client;
     OnTweetComposed tweetComposed;
-    EditText etNewTweet;
-    TextView tvCharacterCount;
-    ImageView ivComposeProfileImage;
+    private Unbinder unbinder;
 
+    // Empty constructor required for DialogFragment
     public ComposeTweetDialogFragment() {
     }
 
     public static ComposeTweetDialogFragment newInstance() {
-        ComposeTweetDialogFragment frag = new ComposeTweetDialogFragment();
-        Bundle args = new Bundle();
-        frag.setArguments(args);
-        return frag;
+        ComposeTweetDialogFragment composeTweetDialogFragment = new ComposeTweetDialogFragment();
+        return composeTweetDialogFragment;
     }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_compose, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
 
     @Override
     public void onAttach(Context context) {
@@ -62,19 +84,10 @@ public class ComposeTweetDialogFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_compose, container);
-    }
-
-    @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         client = TwitterApplication.getRestClient();
-
-        // Get field from view
-        etNewTweet = (EditText) view.findViewById(R.id.etNewTweet);
 
         // Show soft keyboard automatically and request focus to field
         etNewTweet.requestFocus();
@@ -84,10 +97,6 @@ public class ComposeTweetDialogFragment extends DialogFragment {
         etNewTweet.setFilters(new InputFilter[]{
                 new InputFilter.LengthFilter(maxLength)
         });
-
-        tvCharacterCount = (TextView) view.findViewById(R.id.tvCharacterCount);
-
-        ivComposeProfileImage = (ImageView) view.findViewById(R.id.ivComposeProfileImage);
 
         User.getCurrentUser(new User.UserCallbackInterface() {
             @Override
@@ -100,76 +109,67 @@ public class ComposeTweetDialogFragment extends DialogFragment {
             }
         });
 
-        // Find submit button and set a click listener
-        Button btSubmitNewTweet = (Button) view.findViewById(R.id.btSubmitNewTweet);
-        btSubmitNewTweet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Fetch new text
-                String newTweetText = etNewTweet.getText().toString();
-                client.postTweet(newTweetText, new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        super.onSuccess(statusCode, headers, response);
-                        try {
-                            // Get the tweet
-                            Tweet tweet = Tweet.fromJSON(response);
-                            tweetComposed.onTweetComposed(tweet);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        dismiss();
-                        Toast.makeText(getContext(), "Submitted tweet", Toast.LENGTH_LONG).show();
-                    }
+        initCharacterCount();
+    }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                        if (errorResponse != null) {
-                            Log.d("DEBUG", errorResponse.toString());
-                        } else {
-                            Log.d("DEBUG", "null error");
+    @OnClick(R.id.btnCloseCompose)
+    public void closeCompose(View v) {
+        // this should take you back to the timeline without posting the data
+        Resources.Theme theme = getResources().newTheme();
+        theme.applyStyle(R.style.AlertDialogCustom, true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), theme))
+                    .setIcon(R.drawable.pill_filled)
+                    .setMessage(R.string.close_confirmation)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dismiss();
                         }
-                    }
-                });
+
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create();
+            dialog.show();
+            Button nButton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+            nButton.setTextColor(getResources().getColor(R.color.twitter_red, null));
+            Button pButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            pButton.setTextColor(getResources().getColor(R.color.twitter_red_light, null));
+        }
+    }
+
+    @OnClick(R.id.btSubmitNewTweet)
+    public void postTweet(View v) {
+        String newTweetText = etNewTweet.getText().toString();
+        client.postTweet(newTweetText, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    // Get the tweet
+                    Tweet tweet = Tweet.fromJSON(response);
+                    tweetComposed.onTweetComposed(tweet);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                dismiss();
+                Toast.makeText(getContext(), "Submitted tweet", Toast.LENGTH_LONG).show();
             }
-        });
 
-        // Find close button and set a click listener
-        Button btCloseNewTweet = (Button) view.findViewById(R.id.btnClose);
-        btCloseNewTweet.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // this should take you back to the timeline without posting the data
-                Resources.Theme theme = getResources().newTheme();
-                theme.applyStyle(R.style.AlertDialogCustom, true);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), theme))
-                            .setIcon(R.drawable.pill_filled)
-                            .setMessage("You haven't posted your tweet. Are you sure you want to close this activity?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dismiss();
-                                }
-
-                            })
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .create();
-                    dialog.show();
-                    Button nButton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-                    nButton.setTextColor(getResources().getColor(R.color.twitter_red, null));
-                    Button pButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-                    pButton.setTextColor(getResources().getColor(R.color.twitter_red_light, null));
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                if (errorResponse != null) {
+                    Log.d("DEBUG", errorResponse.toString());
+                } else {
+                    Log.d("DEBUG", "null error");
                 }
             }
         });
-
-        initCharacterCount();
     }
 
     public void initCharacterCount() {

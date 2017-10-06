@@ -160,7 +160,15 @@ public class Tweet extends SugarRecord<Tweet> {
         this.retweeted = retweeted;
     }
 
-    public long getRetweetCount() {
+    public boolean isFavorited() {
+        return favorited;
+    }
+
+    public void setFavorited(boolean favorited) {
+        this.favorited = favorited;
+    }
+
+    public int getRetweetCount() {
         return retweetCount;
     }
 
