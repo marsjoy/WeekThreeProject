@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.marswilliams.apps.sweettweets.R;
 import com.marswilliams.apps.sweettweets.models.Tweet;
-import com.marswilliams.apps.sweettweets.networking.TwitterClient;
 
 import org.parceler.Parcels;
 
@@ -17,8 +16,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
-import static com.marswilliams.apps.sweettweets.R.id.tvBodyDetails;
-import static com.marswilliams.apps.sweettweets.R.id.tvCreatedAtDetails;
 import static com.marswilliams.apps.sweettweets.activities.TimelineActivity.TWEET_POSITION;
 
 
@@ -33,13 +30,14 @@ public class TweetDetailsActivity extends AppCompatActivity {
     TextView tvUserName;
     @BindView(R.id.tvScreenNameDetails)
     TextView tvScreenName;
-    @BindView(tvCreatedAtDetails)
+    @BindView(R.id.tvCreatedAtDetails)
     TextView tvCreatedAt;
-    @BindView(tvBodyDetails)
+    @BindView(R.id.tvBodyDetails)
     TextView tvBody;
+    @BindView(R.id.ivMediaImageDetails)
+    ImageView ivMediaImageDetails;
     Tweet tweet;
     int position;
-    TwitterClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +63,11 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 .load(tweet.getUser().getProfileImageUrl())
                 .bitmapTransform(new RoundedCornersTransformation(this, 25, 0))
                 .into(ivProfileImage);
+
+        Glide.with(this)
+                .load(tweet.media.getMediaUrl())
+                .bitmapTransform(new RoundedCornersTransformation(this, 25, 0))
+                .into(ivMediaImageDetails);
     }
 
     @Override

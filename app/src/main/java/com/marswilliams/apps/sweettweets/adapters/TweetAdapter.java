@@ -70,11 +70,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 .bitmapTransform(new RoundedCornersTransformation(context, 25, 0))
                 .into(holder.ivProfileImage);
 
-        Glide.with(context)
-                .load(tweet.media.getMediaUrl())
-                .bitmapTransform(new RoundedCornersTransformation(context, 5, 0))
-                .into(holder.ivMediaImage);
-
         // populate the views according to this data
         holder.tvUserName.setText(tweet.getUser().getName());
         holder.tvUserScreenName.setText(holder.tvUserScreenName.getContext()
@@ -123,8 +118,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         TextView tvUserScreenName;
         @BindView(R.id.tvBody)
         TextView tvBody;
-        @BindView(R.id.ivMediaImage)
-        ImageView ivMediaImage;
         @BindView(R.id.tvCreatedAt)
         TextView tvCreatedAt;
         @BindView(R.id.ibRetweet)
