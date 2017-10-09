@@ -83,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_below="@+id/tvCreatedAt"
+        android:layout_below="@+id/tvCreatedAtDetails"
         android:background="@android:color/darker_gray"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
