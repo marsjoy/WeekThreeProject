@@ -1,10 +1,13 @@
 package com.marswilliams.apps.sweettweets.activities;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -54,8 +57,8 @@ public class TweetDetailsActivity extends AppCompatActivity {
     VideoView ivMediaVideoDetails;
     @BindView(R.id.tvRetweetCount) TextView tvRetweetCount;
     @BindView(R.id.tvFavoriteCount) TextView tvFavoriteCount;
-    @BindView(R.id.ibFavorite) ImageView ibFavorited;
-    @BindView(R.id.ibRetweet) ImageView ibRetweeted;
+    @BindView(R.id.ibFavorited) ImageView ibFavorited;
+    @BindView(R.id.ibRetweeted) ImageView ibRetweeted;
     TwitterClient client;
     Tweet tweet;
     int position;
@@ -80,25 +83,38 @@ public class TweetDetailsActivity extends AppCompatActivity {
         tvBody.setText(tweet.getBody());
         tvScreenName.setText(getString(R.string.formatted_user_screen_name, tweet.getUser().getScreenName()));
         tvCreatedAt.setText(tweet.getRelativeCreatedAt());
+        tvRetweetCount.setText(getString(R.string.count, tweet.getRetweetCount()));
+        tvFavoriteCount.setText(getString(R.string.count, tweet.getFavoriteCount()));
 
         // Load the profile image
         Glide.with(this)
                 .load(tweet.getUser().getProfileImageUrl())
                 .bitmapTransform(new RoundedCornersTransformation(this, 25, 0))
                 .into(ivProfileImage);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (Objects.equals(tweet.getMedia().getMediaType(), "photo") || Objects.equals(tweet.getMedia().getMediaType(), "animated_gif")) {
-                Glide.with(this)
-                        .load(tweet.media.getMediaUrl())
-                        .bitmapTransform(new RoundedCornersTransformation(this, 25, 0))
-                        .into(ivMediaImageDetails);
-            } else {
-                Glide.with(this)
-                        .load(tweet.media.getMediaUrl())
-                        .bitmapTransform(new RoundedCornersTransformation(this, 25, 0))
-                        .into(ivMediaImageDetails);
+        if (!(tweet.getMedia().getMediaUrl() == null)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                if (Objects.equals(tweet.getMedia().getMediaType(), getString(R.string.photo)) || Objects.equals(tweet.getMedia().getMediaType(), getString(R.string.animated_gif))) {
+                    Glide.with(this)
+                            .load(tweet.getMedia().getMediaUrl())
+                            .bitmapTransform(new RoundedCornersTransformation(this, 25, 0))
+                            .into(ivMediaImageDetails);
+                } else {
+                    ivMediaVideoDetails.setVideoPath(tweet.getMedia().getMediaUrl());
+                    MediaController mediaController = new MediaController(this);
+                    mediaController.setAnchorView(ivMediaVideoDetails);
+                    ivMediaVideoDetails.setMediaController(mediaController);
+                    ivMediaVideoDetails.requestFocus();
+                    ivMediaVideoDetails.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        // Close the progress bar and play the video
+                        public void onPrepared(MediaPlayer mp) {
+                            ivMediaVideoDetails.start();
+                        }
+                    });
+                }
             }
+        } else {
+            ivMediaImageDetails.setVisibility(View.GONE);
+            ivMediaVideoDetails.setVisibility(View.GONE);
         }
     }
 
@@ -132,7 +148,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
         }
     }
 
-     @OnClick(R.id.ibRetweet)
+     @OnClick(R.id.ibRetweeted)
     public void putReply() {
         // Send the new tweet back to reply
         Intent i = new Intent(this, ReplyActivity.class);
@@ -140,7 +156,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
         startActivityForResult(i, REQUEST_CODE_DETAILS);
     }
 
-    @OnClick(R.id.ibRetweet)
+    @OnClick(R.id.ibRetweeted)
     public void putRetweet() {
         if(tweet.isRetweeted()) {
             unretweetTweet();
@@ -149,7 +165,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.ibFavoriteDetails)
+    @OnClick(R.id.ibFavorited)
     public void putFavorite() {
         if(tweet.isFavorited()) {
             unfavoriteTweet();
@@ -172,26 +188,26 @@ public class TweetDetailsActivity extends AppCompatActivity {
                     setRetweeted();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Unable to retweet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.unable_to_retweet, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 throwable.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Unable to retweet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.unable_to_retweet, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 throwable.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Unable to retweet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.unable_to_retweet, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 throwable.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Unable to retweet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.unable_to_retweet, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -210,26 +226,26 @@ public class TweetDetailsActivity extends AppCompatActivity {
                     setRetweeted();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Unable to unretweet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.unable_to_retweet, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 throwable.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Unable to unretweet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.unable_to_retweet, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 throwable.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Unable to unretweet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.unable_to_retweet, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 throwable.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Unable to unretweet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.unable_to_retweet, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -252,26 +268,26 @@ public class TweetDetailsActivity extends AppCompatActivity {
                     setFavorited();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.failed_to_favorite_tweet, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 throwable.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.failed_to_favorite_tweet, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 throwable.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.failed_to_favorite_tweet, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 throwable.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.failed_to_favorite_tweet, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -294,26 +310,26 @@ public class TweetDetailsActivity extends AppCompatActivity {
                     setFavorited();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.failed_to_favorite_tweet, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 throwable.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.failed_to_favorite_tweet, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 throwable.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.failed_to_favorite_tweet, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 throwable.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.failed_to_favorite_tweet, Toast.LENGTH_SHORT).show();
             }
         });
     }

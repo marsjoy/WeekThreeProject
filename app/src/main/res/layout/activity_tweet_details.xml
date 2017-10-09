@@ -93,21 +93,21 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_below="@+id/tvBodyDetails"
+        android:layout_below="@+id/ivMediaImageDetails"
         android:background="@android:color/darker_gray"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
 
     <LinearLayout
-        android:id="@+id/llRetweetsLikesDetails"
+        android:id="@+id/llRetweetsFavoritesDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/vDividerDetails1">
+        android:layout_below="@+id/vDividerDetails">
 
     <TextView
-        android:id="@+id/tvNumRetweetsDetails"
+        android:id="@+id/tvRetweetCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/num"
@@ -123,7 +123,7 @@
         android:layout_margin="5dp"/>
 
     <TextView
-        android:id="@+id/tvNumLikesDetails"
+        android:id="@+id/tvFavoriteCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/num"
@@ -132,10 +132,10 @@
         android:layout_margin="5dp"/>
 
     <TextView
-        android:id="@+id/tvLikesDetails"
+        android:id="@+id/tvFavoritesDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Likes"
+        android:text="@string/favorites"
         android:layout_margin="5dp"/>
         </LinearLayout>
 
@@ -143,7 +143,7 @@
         android:id="@+id/vDividerDetails2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/llRetweetsLikesDetails"
+        android:layout_below="@+id/llRetweetsFavoritesDetails"
         android:background="@android:color/darker_gray"
         android:layout_margin="5dp"/>
 
@@ -166,7 +166,7 @@
         app:srcCompat="@drawable/ic_no_comment"/>
 
     <ImageButton
-        android:id="@+id/ibRetweetDetails"
+        android:id="@+id/ibRetweeted"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginLeft="20dp"
@@ -175,7 +175,7 @@
         app:srcCompat="@drawable/ic_unretweet"/>
 
     <ImageButton
-        android:id="@+id/ibFavoriteDetails"
+        android:id="@+id/ibFavorited"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginLeft="20dp"

@@ -24,4 +24,10 @@
     <string name="tweet_content">tweet content</string>
     <string name="tweeter">\@ tweeter</string>
     <string name="sample_tweeter">sample_tweeter</string>
+    <string name="photo">photo</string>
+    <string name="animated_gif">animated_gif</string>
+    <string name="unable_to_retweet">Unable to retweet</string>
+    <string name="failed_to_favorite_tweet">Failed to favorite tweet</string>
+    <string name="favorites">Favorites</string>
+    <string name="count">%d</string>
 </resources>
