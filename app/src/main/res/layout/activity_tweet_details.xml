@@ -50,6 +50,16 @@
         android:text="@string/tweeter" />
 
     <TextView
+        android:id="@+id/tvCreatedAtDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/at_time"
+        android:layout_toEndOf="@+id/ivProfileImageDetails"
+        android:layout_below="@+id/tvScreenNameDetails"
+        android:layout_marginBottom="@dimen/tweet_margin"
+        android:layout_alignStart="@+id/tvScreenNameDetails" />
+
+    <TextView
         android:id="@+id/tvBodyDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -69,21 +79,14 @@
     <!--android:layout_below="@+id/tvTweetBodyDetails"-->
     <!--android:layout_margin="5dp"/>-->
 
-    <TextView
-        android:id="@+id/tvCreatedAtDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/at_time"
-        android:layout_below="@+id/tvBodyDetails"
-        android:layout_marginBottom="@dimen/tweet_margin"
-        android:layout_alignStart="@+id/tvBodyDetails" />
+
 
     <View
         android:id="@+id/vDividerDetails1"
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_below="@+id/tvCreatedAtDetails"
+        android:layout_below="@+id/tvBodyDetails"
         android:background="@android:color/darker_gray"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"

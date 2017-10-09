@@ -25,6 +25,8 @@ public class Tweet extends SugarRecord<Tweet> {
     boolean favorited;
     int retweetCount;
     boolean retweeted;
+    public Media media;
+
 
     public Tweet() {
 
@@ -54,6 +56,12 @@ public class Tweet extends SugarRecord<Tweet> {
             this.retweetCount = jsonObject.getInt("retweet_count");
         } catch (JSONException e) {
             this.retweetCount = 0;
+        }
+        try {
+            this.media = new Media(jsonObject.getJSONObject("entities").getJSONArray("media"));
+        } catch(JSONException e) {
+            e.printStackTrace();
+            this.media = new Media();
         }
     }
 
@@ -85,6 +93,12 @@ public class Tweet extends SugarRecord<Tweet> {
             tweet.retweetCount = jsonObject.getInt("retweet_count");
         } catch (JSONException e) {
             tweet.retweetCount = 0;
+        }
+        try {
+            tweet.media = new Media(jsonObject.getJSONObject("entities").getJSONArray("media"));
+        } catch(JSONException e) {
+            e.printStackTrace();
+            tweet.media = new Media();
         }
         return tweet;
     }
