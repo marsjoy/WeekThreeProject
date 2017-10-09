@@ -12,12 +12,18 @@ import org.parceler.Parcel;
 public class Media {
 
     private String mediaUrl;
+    private String mediaType; //Type of uploaded media. Possible types include photo, video, and animated_gif
 
     public Media() { }
 
     public Media(JSONArray media) throws JSONException {
         try {
             mediaUrl = media.getJSONObject(0).getString("media_url_https");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            mediaType = media.getJSONObject(0).getString("type");
         } catch (JSONException e) {
             e.printStackTrace();
         }
