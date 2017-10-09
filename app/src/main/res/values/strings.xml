@@ -18,4 +18,10 @@
     <string name="close_confirmation">You haven\'t posted your tweet. Are you sure you want to return to your home timeline?</string>
     <string name="twitter_client">TwitterClient</string>
     <string name="unable_to_fetch_tweets">Unable to fetch tweets</string>
+    <string name="at_time">at time</string>
+    <string name="num">#</string>
+    <string name="retweets">Retweets</string>
+    <string name="tweet_content">tweet content</string>
+    <string name="tweeter">\@ tweeter</string>
+    <string name="sample_tweeter">sample_tweeter</string>
 </resources>
