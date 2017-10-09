@@ -190,11 +190,19 @@ public class Tweet extends SugarRecord<Tweet> {
         this.retweetCount = retweetCount;
     }
 
+    public int getFavoriteCount() {
+        return favoriteCount;
+    }
+
+    public void setFavoriteCount(int favoriteCount) {
+        this.favoriteCount = favoriteCount;
+    }
+
     public Media getMedia() { 
         return media; 
     }
 
-    public setMedia(Media media) { 
+    public void setMedia(Media media) {
         this.media = media; 
     }
 }
