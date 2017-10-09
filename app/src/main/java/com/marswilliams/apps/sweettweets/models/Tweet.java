@@ -189,4 +189,12 @@ public class Tweet extends SugarRecord<Tweet> {
     public void setRetweetCount(int retweetCount) {
         this.retweetCount = retweetCount;
     }
+
+    public Media getMedia() { 
+        return media; 
+    }
+
+    public setMedia(Media media) { 
+        this.media = media; 
+    }
 }

@@ -32,5 +32,17 @@ public class Media {
     public String getMediaUrl() {
         return mediaUrl;
     }
+
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    public String setMediaUrl(String mediaUrl) {
+        this.mediaUrl = mediaUrl;
+    }
+
+    public String setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+    }
 }
 

@@ -36,6 +36,8 @@ public class TweetDetailsActivity extends AppCompatActivity {
     TextView tvBody;
     @BindView(R.id.ivMediaImageDetails)
     ImageView ivMediaImageDetails;
+    @BindView(R.id.ivMediaVideoDetails)
+    ImageView ivMediaVideoDetails;
     Tweet tweet;
     int position;
 
@@ -64,10 +66,17 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 .bitmapTransform(new RoundedCornersTransformation(this, 25, 0))
                 .into(ivProfileImage);
 
-        Glide.with(this)
-                .load(tweet.media.getMediaUrl())
-                .bitmapTransform(new RoundedCornersTransformation(this, 25, 0))
-                .into(ivMediaImageDetails);
+        if (tweet.getMedia().getType() == "video") {
+            Glide.with(this)
+                    .load(tweet.media.getMediaUrl())
+                    .bitmapTransform(new RoundedCornersTransformation(this, 25, 0))
+                    .into(ivMediaVideoDetails);
+        } else {
+            Glide.with(this)
+                    .load(tweet.media.getMediaUrl())
+                    .bitmapTransform(new RoundedCornersTransformation(this, 25, 0))
+                    .into(ivMediaImageDetails);
+        }
     }
 
     @Override
