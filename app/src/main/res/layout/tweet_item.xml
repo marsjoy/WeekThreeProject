@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/tweet_margin"
     android:layout_marginEnd="@dimen/tweet_margin"
     android:layout_marginStart="@dimen/tweet_margin"
     android:layout_marginTop="@dimen/tweet_margin"
-    android:id="@+id/rootView"
     android:orientation="horizontal">
 
     <ImageView
@@ -65,9 +65,9 @@
             android:layout_height="30dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:scaleX="-1"
             android:backgroundTint="@android:color/transparent"
-            app:srcCompat="@drawable/ic_comment" />
+            android:scaleX="-1"
+            app:srcCompat="@drawable/ic_no_comment" />
 
         <TextView
             android:id="@+id/tvReplyCount"
