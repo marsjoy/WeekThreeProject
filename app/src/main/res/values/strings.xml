@@ -30,4 +30,11 @@
     <string name="failed_to_favorite_tweet">Failed to favorite tweet</string>
     <string name="favorites">Favorites</string>
     <string name="count">%d</string>
+    <string name="tweet_your_reply">Tweet your reply</string>
+    <string name="reply">Reply</string>
+    <string name="replying_to">Replying to @%s</string>
+    <string name="reply_text" formatted="false">\@%s %s</string>
+    <string name="failed_to_submit_reply">Failed to submit reply</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 </resources>

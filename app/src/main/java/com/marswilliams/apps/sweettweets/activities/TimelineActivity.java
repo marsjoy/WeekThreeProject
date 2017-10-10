@@ -39,9 +39,11 @@ import cz.msebera.android.httpclient.Header;
 
 import static com.marswilliams.apps.sweettweets.R.id.swipeContainer;
 
-public class TimelineActivity extends AppCompatActivity implements ComposeTweetDialogFragment.OnTweetComposed {
+public class TimelineActivity extends AppCompatActivity implements
+        ComposeTweetDialogFragment.OnTweetComposed {
     public static final String TWEET_POSITION = "tweetPosition";
-    public static final int REQUEST_CODE_DETAILS = 30;
+    private static final int REQUEST_CODE_DETAILS = 42;
+    private static final int REQUEST_CODE_REPLY = 32;
 
     @BindView(R.id.rvTweets)
     RecyclerView rvTweets;
@@ -230,13 +232,21 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // If returning successfully from details
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAILS) {
+        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAILS) {
             // Deserialize the tweet and its position
             Tweet newTweet = Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
             int position = data.getIntExtra(TWEET_POSITION, 0);
             tweets.set(position, newTweet);
             tweetAdapter.notifyItemChanged(position);
             rvTweets.scrollToPosition(position);
+        // If returning successfully from reply
+        } else if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_REPLY) {
+            // Deserialize the tweet
+            Tweet newTweet = Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
+            // Get the current fragment, insert the tweet, and notify the adapter
+            tweets.add(0, newTweet);
+            tweetAdapter.notifyItemInserted(0);
+            rvTweets.scrollToPosition(0);
         }
     }
 }

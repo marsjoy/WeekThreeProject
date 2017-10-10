@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlRootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/tweet_margin"
@@ -156,7 +157,7 @@
         android:orientation="horizontal">
 
     <ImageButton
-        android:id="@+id/ibMessageDetails"
+        android:id="@+id/ibReplyDetails"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginLeft="20dp"
