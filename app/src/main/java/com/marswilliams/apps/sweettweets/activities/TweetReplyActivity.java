@@ -1,19 +1,16 @@
-package com.marswilliams.apps.sweettweets.fragments;
+package com.marswilliams.apps.sweettweets.activities;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,67 +27,58 @@ import com.marswilliams.apps.sweettweets.models.Tweet;
 import com.marswilliams.apps.sweettweets.models.User;
 import com.marswilliams.apps.sweettweets.networking.TwitterClient;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
-public class ComposeTweetDialogFragment extends DialogFragment {
+import static com.marswilliams.apps.sweettweets.activities.TimelineActivity.TWEET_POSITION;
+
+/**
+ * Created by mars_williams on 10/9/17.
+ */
+
+public class TweetReplyActivity extends AppCompatActivity {
+    private static final int RESULT_CODE_REPLY = 32;
     final private int maxLength = 140;
-    @BindView(R.id.etNewTweet)
-    EditText etNewTweet;
-    @BindView(R.id.tvCharacterCount)
+
+    @BindView(R.id.tvReplyingTo)
+    TextView tvReplyingTo;
+    @BindView(R.id.tvCharacterCountReply)
     TextView tvCharacterCount;
+    @BindView(R.id.etNewTweetReply)
+    EditText etNewTweet;
     @BindView(R.id.ivComposeProfileImage)
     ImageView ivComposeProfileImage;
+
+    Tweet tweet;
     TwitterClient client;
-    OnTweetComposed tweetComposed;
-    private Unbinder unbinder;
-
-    // Empty constructor required for DialogFragment
-    public ComposeTweetDialogFragment() {
-    }
-
-    public static ComposeTweetDialogFragment newInstance() {
-        ComposeTweetDialogFragment composeTweetDialogFragment = new ComposeTweetDialogFragment();
-        return composeTweetDialogFragment;
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_compose, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
-    }
+    int position;
+    Context context;
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_tweet_reply);
 
+        context = getBaseContext();
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        tweetComposed = (OnTweetComposed) context;
-    }
-
-    @Override
-    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this);
 
         client = TwitterApplication.getRestClient();
 
+        tweet = Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
+        position = getIntent().getIntExtra(TWEET_POSITION, 0);
+
         // Show soft keyboard automatically and request focus to field
         etNewTweet.requestFocus();
-        getDialog().getWindow().setSoftInputMode(
+        getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         etNewTweet.setFilters(new InputFilter[]{
@@ -100,15 +88,18 @@ public class ComposeTweetDialogFragment extends DialogFragment {
         User.getCurrentUser(new User.UserCallbackInterface() {
             @Override
             public void onUserAvailable(User currentUser) {
-                Glide.with(getContext())
+                Glide.with(context)
                         .load(currentUser.getProfileImageUrl())
                         .placeholder(R.drawable.ic_profile_image_placeholder)
-                        .bitmapTransform(new RoundedCornersTransformation(ivComposeProfileImage.getContext(), 25, 0))
+                        .bitmapTransform(new RoundedCornersTransformation(context, 25, 0))
                         .into(ivComposeProfileImage);
             }
         });
 
-        Utils.initCharacterCount(getContext(), etNewTweet, tvCharacterCount);
+        // Populate the @ replying to
+        tvReplyingTo.setText(getString(R.string.replying_to, tweet.getUser().getScreenName()));
+
+        Utils.initCharacterCount(context, etNewTweet, tvCharacterCount);
     }
 
     @OnClick(R.id.btnCloseCompose)
@@ -117,17 +108,18 @@ public class ComposeTweetDialogFragment extends DialogFragment {
         Resources.Theme theme = getResources().newTheme();
         theme.applyStyle(R.style.AlertDialogCustom, true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(getContext(), theme))
+            AlertDialog dialog = new AlertDialog.Builder(new ContextThemeWrapper(context, theme))
                     .setIcon(R.drawable.pill_filled)
                     .setMessage(R.string.close_confirmation)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            dismiss();
+                            // Return to the calling activity, send the new tweet and position
+                            onReplyFinished(tweet);
                         }
 
                     })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -142,36 +134,51 @@ public class ComposeTweetDialogFragment extends DialogFragment {
         }
     }
 
-    @OnClick(R.id.btSubmitNewTweet)
-    public void postTweet(View v) {
-        String newTweetText = etNewTweet.getText().toString();
-        client.postTweet(newTweetText, new JsonHttpResponseHandler() {
+    @OnClick(R.id.btSubmitNewTweetReply)
+    public void submitReply() {
+        String newReplyText = getString(R.string.reply_text, tweet.getUser().getScreenName(), etNewTweet.getText().toString());
+        // Send the request and parameters to the endpoint
+        client.replyTweet(newReplyText, etNewTweet.getId(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 try {
                     // Get the tweet
                     Tweet tweet = Tweet.fromJSON(response);
-                    tweetComposed.onTweetComposed(tweet);
+                    // Return to the calling activity, send the new tweet and position
+                    onReplyFinished(tweet);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                dismiss();
-                Toast.makeText(getContext(), "Submitted tweet", Toast.LENGTH_LONG).show();
+                finish();
             }
+
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                if (errorResponse != null) {
-                    Log.d("DEBUG", errorResponse.toString());
-                } else {
-                    Log.d("DEBUG", "null error");
-                }
+                throwable.printStackTrace();
+                Toast.makeText(context, R.string.failed_to_submit_reply, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                throwable.printStackTrace();
+                Toast.makeText(context, R.string.failed_to_submit_reply, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                throwable.printStackTrace();
+                Toast.makeText(context, R.string.failed_to_submit_reply, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public interface OnTweetComposed {
-        void onTweetComposed(Tweet tweet);
+    public void onReplyFinished(Tweet tweet) {
+        Intent i = new Intent();
+        i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+        i.putExtra(TWEET_POSITION, position);
+        setResult(RESULT_CODE_REPLY, i);
+        finish();
     }
 }

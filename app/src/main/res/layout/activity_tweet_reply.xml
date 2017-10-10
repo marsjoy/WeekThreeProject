@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:padding="@dimen/activity_vertical_margin"
+tools:context="com.marswilliams.apps.sweettweets.activities.TweetReplyActivity">
+
+<Button
+    android:id="@+id/btnCloseCompose"
+    style="@style/Widget.AppCompat.Button.Small"
+    android:layout_width="@dimen/close_button_width"
+    android:layout_height="@dimen/close_button_height"
+    android:layout_alignParentTop="true"
+    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+    android:layout_marginStart="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/pill_filled"
+    android:backgroundTint="@color/twitter_blue"
+    android:text="@string/close"
+    android:textColor="@android:color/white" />
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="28dp"
+    android:layout_below="@+id/btnCloseCompose"
+    android:layout_alignParentStart="true">
+
+    <ImageView
+        android:id="@+id/ivComposeProfileImage"
+        android:layout_width="@dimen/tweet_profile_image_width"
+        android:layout_height="@dimen/tweet_profile_image_height"
+        android:layout_marginStart="17dp"
+        android:layout_alignTop="@+id/etNewTweetReply"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/tvReplyingTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/ivComposeProfileImage"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/replying_to"
+        android:textStyle="bold"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:maxLines="@string/max_lines"
+        android:minLines="@string/max_lines"/>
+
+    <EditText
+        android:id="@+id/etNewTweetReply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="all"
+        android:backgroundTint="@color/twitter_dark_gray"
+        android:hint="@string/tweet_your_reply"
+        android:inputType="textMultiLine"
+        android:linksClickable="true"
+        android:textColor="@color/twitter_dark_gray"
+        android:textCursorDrawable="@null"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_below="@+id/tvReplyingTo"
+        android:layout_alignStart="@+id/tvReplyingTo" />
+
+    <TextView
+        android:id="@+id/tvCharacterCountReply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/etNewTweetReply"
+        android:layout_below="@+id/etNewTweetReply"
+        android:layout_marginTop="@dimen/tweet_character_count_margin"
+        android:maxLength="@string/character_count"
+        android:text="@string/character_count"
+        android:textColor="@color/twitter_light_gray" />
+
+    <TextView
+        android:id="@+id/tvCharactersRemaining"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/tweet_username_margin"
+        android:layout_alignBaseline="@id/tvCharacterCountReply"
+        android:layout_below="@id/etNewTweetReply"
+        android:layout_toEndOf="@id/tvCharacterCountReply"
+        android:text="@string/characters_remaining"
+        android:textColor="@color/twitter_light_gray" />
+
+</RelativeLayout>
+
+<Button
+    android:id="@+id/btSubmitNewTweetReply"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentEnd="true"
+    android:layout_marginBottom="@dimen/tweet_compose_margin"
+    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+    android:background="@drawable/pill_filled"
+    android:text="@string/tweet"
+    android:textColor="@android:color/white"
+    android:textColorHint="@color/twitter_blue" />
+
+</RelativeLayout>
